@@ -7,101 +7,61 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Promise from "bluebird";
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+
+
 import '../App.css';
-import Logo from '../assets/icon.png'; 
+import Logo from '../assets/icon.png';
 
 const ipc = window.require('electron').ipcRenderer
 
-
+const AppDAO = require('../db/dao').default;
+const Crud = require('../db/crud').default;
 
 class ShowReminder extends Component {
 
-  createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
+  constructor(props) {
+    super(props);
+    this.state = {
+      rows: [],
+      open: false,
+      setOpen: false
+    };
+    this.setDatabase();
+    this.loadData();
   }
 
-  rows = [
-    this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9), this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    this.createData('Eclair', 262, 16.0, 24, 6.0),
-    this.createData('Cupcake', 305, 3.7, 67, 4.3),
-    this.createData('Gingerbread', 356, 16.0, 49, 3.9),
-  ];
+  setDatabase() {
+    this.dao = new AppDAO('./database.sqlite3');
+    this.db = new Crud(this.dao);
+    this.db.createTable()
+      .then(() => {
+        console.log('db is created...')
+      })
+      .catch((err) => {
+        console.log('Error: ')
+        console.log(JSON.stringify(err))
+      });
+  }
+
+  loadData() {
+    var getAllData = this.db.getAll();
+
+    Promise.all(getAllData).then((data) => {
+      this.setState({ rows: data });
+    })
+  }
+
+  deleteItem(id) {
+    this.db.delete(id);
+    this.loadData();
+    this.handleClick();
+  }
 
   classes = makeStyles({
     table: {
@@ -109,16 +69,28 @@ class ShowReminder extends Component {
     },
   });
 
+  handleClick = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({ open: false });
+  };
+
   render() {
     return (
       <>
         <Jumbotron>
           <h1>
-          <img width="7%" height="auto" className="img-responsive" src={Logo}  alt="logo" />
+            <img width="7%" height="auto" className="img-responsive" src={Logo} alt="logo" />
           &ensp;My reminders
           </h1>
           <p>
-            You have 35 reminders.
+            You have {this.state.rows.length} reminders.
             <Link style={{ marginLeft: 20 }} to="/">
               <Button size="small" color="secondary">Back</Button>
             </Link>
@@ -126,25 +98,30 @@ class ShowReminder extends Component {
 
           <TableContainer component={Paper}>
             <Table className={this.classes.table} size="small" aria-label="a dense table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Dessert (100g serving)</TableCell>
-                  <TableCell align="right">Calories</TableCell>
-                  <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                  <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                  <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                </TableRow>
-              </TableHead>
               <TableBody>
-                {this.rows.map((row) => (
-                  <TableRow key={row.name}>
+                {this.state.rows.map((row) => (
+                  <TableRow key={row.title}>
                     <TableCell component="th" scope="row">
-                      {row.name}
+                      {row.title}
                     </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.protein}</TableCell>
+                    <TableCell component="th" scope="row">
+                      {row.message}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {row.startAt}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {row.concatText}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {row.endAt}
+                    </TableCell>
+                    <TableCell align="right">
+                      <Button variant="contained" size="small" color="dark">Details</Button>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Button variant="contained" size="small" onClick={() => this.deleteItem(row.id)} color="dark">delete</Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -156,6 +133,23 @@ class ShowReminder extends Component {
             <Button size="small" color="secondary">Back</Button>
           </Link>
         </Jumbotron>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={this.state.open}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+          message="Deleted!"
+          action={
+            <React.Fragment>
+              <IconButton size="small" aria-label="close" color="secondary" onClick={this.handleClose}>
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </React.Fragment>
+          }
+        />
       </>
     );
   }

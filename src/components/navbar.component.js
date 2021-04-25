@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Navbar, Nav, Form, ButtonGroup, ButtonToolbar } from 'react-bootstrap';
+import { Button, Navbar, Nav, Form, ButtonGroup, ButtonToolbar, Badge } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 import '../App.css';
 const ipc = window.require('electron').ipcRenderer
 
@@ -26,13 +27,14 @@ class MyNavBar extends Component {
     ipc.send('maximise');
   }
 
+  about() {
+    console.log("about click")
+  }
+
   render() {
     return (
       <>
-        <Navbar bg="dark" variant="dark" className="fixed-nav-bar">
-          <Navbar.Brand className="titlebar">Reminder app</Navbar.Brand>
-          <Nav className="mr-auto">
-          </Nav>
+        <Navbar variant="dark" className="fixed-nav-bar r-dark">
           <Form inline>
           <ButtonToolbar aria-label="Toolbar with button groups">
             <ButtonGroup size="sm" className="mr-2">
@@ -46,6 +48,18 @@ class MyNavBar extends Component {
             </ButtonGroup>
             </ButtonToolbar>
           </Form>
+          <Nav className="mr-auto titlebar">
+          <span>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</span>
+          </Nav>
+            <Badge className="aboutBadge" variant="light" onClick={() => this.about}>About</Badge>
+          <span>&ensp;</span>
+          <Link to="/show-reminders">
+            <Badge variant="light">Show my reminders</Badge>
+          </Link>
+          <span>&ensp;</span>
+          <Link to="/">
+            <Badge variant="light">Create Reminder</Badge>
+          </Link>
         </Navbar>
       </>
     );

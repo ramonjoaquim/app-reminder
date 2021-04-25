@@ -7,6 +7,9 @@ const path = require('path');
 const isDev = require('electron-is-dev');
 const operationanSystem = require('os');
 
+const {sqlite3} = require('sqlite3');
+const Promise = require('bluebird');
+
 //my variables
 
 //
@@ -42,9 +45,10 @@ ipcMain.on('put-in-tray', (event) => {
     
   }]);
 
-  appIcon.setToolTip('Reminder app keep running in background.')
+  appIcon.setToolTip('Reminder app')
   appIcon.setContextMenu(contextMenu);
   mainWindow.hide();
+  showNotification('Running on background...');
 });
 
 ipcMain.on('remove-tray', () => {
@@ -76,7 +80,7 @@ app.on('window-all-closed', () => {
   if (appIcon) appIcon.destroy()
 });
 
-ipcMain.on('notification', (event, title, message) => {
+ipcMain.on('notification', (_event, title, message) => {
   showNotification(title, message);
 });
 
@@ -94,7 +98,9 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     titleBarStyle: 'hidden',
     width: 800,
-    height: 800,
+    height: 600,
+    minHeight:600,
+    minWidth:800,
     frame:false,
     resizable: true,
     webPreferences: {
