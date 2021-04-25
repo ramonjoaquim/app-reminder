@@ -1,38 +1,52 @@
-.App {
+::-webkit-scrollbar {
+  display: none;
+}
+html {
+  height: 100%;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:-webkit-any-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:-webkit-any-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.navbar {
+  position: fixed !important; 
+  width: 100%;
+  z-index: 999;
+}
+
+.app .jumbotron {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.app .card-header {
   color: white;
+  font-weight: bold;
 }
 
-.App-link {
-  color: #61dafb;
+.my-button {
+width: 20px;height: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.titlebar {
+  -webkit-app-region: drag;
+  cursor: -webkit-grab; cursor: grab;
+}
+
+.jumbotron{
+  height: 100vh;
 }
