@@ -1,22 +1,13 @@
 const electron = require('electron');
-
 const { ipcMain, app, Menu, Tray, Notification } = electron;
 const { BrowserWindow } = electron;
-
 const path = require('path');
 const isDev = require('electron-is-dev');
 const operationanSystem = require('os');
-
-const {sqlite3} = require('sqlite3');
-const Promise = require('bluebird');
-
-//my variables
-
-//
 let mainWindow;
-
 let appIcon = null
 
+//ipcMain listeners
 ipcMain.on('put-in-tray', (event) => {
   const iconPath = path.join(__dirname, 'icon.png');
   appIcon = new Tray(iconPath);
@@ -76,14 +67,30 @@ ipcMain.on('minimise', () => {
   mainWindow.minimize();
 });
 
-app.on('window-all-closed', () => {
-  if (appIcon) appIcon.destroy()
-});
-
 ipcMain.on('notification', (_event, title, message) => {
   showNotification(title, message);
 });
 
+//App listeners
+app.on('ready', createWindow);
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
+app.on('window-all-closed', () => {
+  if (appIcon) appIcon.destroy()
+});
+
+app.on('activate', () => {
+  if (mainWindow === null) {
+    createWindow();
+  }
+});
+
+//functions
 function showNotification (title, message) {
   const notification = {
     title: title,
@@ -92,7 +99,6 @@ function showNotification (title, message) {
   }
   new Notification(notification).show();
 }
-
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -126,16 +132,10 @@ function createWindow() {
   });
 }
 
-app.on('ready', createWindow);
+// function getReminders() {
+//   setInterval(() => {
+//     console.log("verificando reminders");
+//   }, 1000);
+// }
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow();
-  }
-});
+// getReminders();

@@ -111,14 +111,14 @@ class Home extends Component {
     console.log(this.state);
     this.db.insert(this.state);
     this.loadData();
-    this.handleClick();
+    this.notify();
   }
 
-  handleClick = () => {
+  notify = () => {
     this.setState({ open: true });
   };
 
-  handleClose = (event, reason) => {
+  closeNotify = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -147,7 +147,7 @@ class Home extends Component {
                   <FormControl name="message_notification" value={this.state.value} onChange={this.handleChange} placeholder="Message notification" aria-label="Message notification" aria-describedby="basic-addon2" />
                   <InputGroup.Append>
                     <div className={this.classes.root} style={{ marginTop: 4, marginLeft: 5 }}>
-                      <Button variant="contained" size="small" className="buttonActionColor" onClick={() => this.notification(this.state.title, this.state.messageNotification)}>Test</Button>
+                      <Button variant="contained" size="small" className="buttonActionColor" onClick={() => this.notification(this.state.title, this.state.message_notification)}>Test</Button>
                     </div>
                   </InputGroup.Append>
                 </InputGroup>
@@ -229,11 +229,11 @@ class Home extends Component {
           }}
           open={this.state.open}
           autoHideDuration={6000}
-          onClose={this.handleClose}
+          onClose={this.closeNotify}
           message="Created!"
           action={
             <React.Fragment>
-              <IconButton size="small" aria-label="close" color="secondary" onClick={this.handleClose}>
+              <IconButton size="small" aria-label="close" color="secondary" onClick={this.closeNotify}>
                 <CloseIcon fontSize="small" />
               </IconButton>
             </React.Fragment>

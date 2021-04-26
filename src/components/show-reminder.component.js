@@ -60,7 +60,7 @@ class ShowReminder extends Component {
   deleteItem(id) {
     this.db.delete(id);
     this.loadData();
-    this.handleClick();
+    this.notify();
   }
 
   classes = makeStyles({
@@ -69,11 +69,11 @@ class ShowReminder extends Component {
     },
   });
 
-  handleClick = () => {
+  notify = () => {
     this.setState({ open: true });
   };
 
-  handleClose = (event, reason) => {
+  closeNotify = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -105,13 +105,13 @@ class ShowReminder extends Component {
                       {row.title}
                     </TableCell>
                     <TableCell component="th" scope="row">
-                      {row.message}
+                      {row.message_notification}
                     </TableCell>
                     <TableCell component="th" scope="row">
                       {row.startAt}
                     </TableCell>
                     <TableCell component="th" scope="row">
-                      {row.concatText}
+                      à
                     </TableCell>
                     <TableCell component="th" scope="row">
                       {row.endAt}
@@ -133,6 +133,7 @@ class ShowReminder extends Component {
             <Button size="small" color="secondary">Back</Button>
           </Link>
         </Jumbotron>
+
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',
@@ -140,11 +141,11 @@ class ShowReminder extends Component {
           }}
           open={this.state.open}
           autoHideDuration={6000}
-          onClose={this.handleClose}
+          onClose={this.closeNotify}
           message="Deleted!"
           action={
             <React.Fragment>
-              <IconButton size="small" aria-label="close" color="secondary" onClick={this.handleClose}>
+              <IconButton size="small" aria-label="close" color="secondary" onClick={this.closeNotify}>
                 <CloseIcon fontSize="small" />
               </IconButton>
             </React.Fragment>

@@ -45,6 +45,13 @@ class Crud {
   getAll() {
       return this.dao.all(`SELECT * FROM reminder`);
   }
+
+  getWhere(where) {
+    return this.dao.run(
+      `SELECT FROM reminder WHERE = ?`,
+      [where]
+  );
+  }
 }
 
 export default Crud;
