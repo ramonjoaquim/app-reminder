@@ -101,6 +101,7 @@ function showNotification (title, message) {
 }
 
 function createWindow() {
+  const iconPath = path.join(__dirname, 'icon.png');
   mainWindow = new BrowserWindow({
     titleBarStyle: 'hidden',
     width: 800,
@@ -108,6 +109,7 @@ function createWindow() {
     minHeight:600,
     minWidth:800,
     frame:false,
+    icon: iconPath,
     resizable: true,
     webPreferences: {
       nodeIntegration: true,
