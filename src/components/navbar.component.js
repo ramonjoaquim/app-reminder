@@ -40,10 +40,10 @@ class MyNavBar extends Component {
           <Form inline>
           <ButtonToolbar aria-label="Toolbar with button groups">
             <ButtonGroup size="sm">
-              <CloseIcon variant="danger" className="my-button-close" title="Close" onClick={() => this.closeWindow()}></CloseIcon>
+              <CloseIcon className="my-button-close" title="Close" onClick={() => this.closeWindow()}></CloseIcon>
             </ButtonGroup>
             <ButtonGroup size="sm" className="mr-2">
-              <RemoveSharpIcon variant="success" className="my-button" title="Minimise" onClick={() => this.minimiseWindow()}></RemoveSharpIcon>
+              <RemoveSharpIcon className="my-button" title="Minimise" onClick={() => this.minimiseWindow()}></RemoveSharpIcon>
             </ButtonGroup>
             </ButtonToolbar>
           </Form>

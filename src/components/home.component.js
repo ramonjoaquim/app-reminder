@@ -9,6 +9,7 @@ import Switch from '@material-ui/core/Switch';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Alert from '@material-ui/lab/Alert';
 
 import '../App.css';
 import Logo from '../assets/icon.png';
@@ -18,25 +19,28 @@ const ipc = window.require('electron').ipcRenderer
 const AppDAO = require('../db/dao').default;
 const Crud = require('../db/crud').default;
 class Home extends Component {
+
+  initialState = {
+    title: '',
+    message_notification: '',
+    startAt: '',
+    endAt: '',
+    timeStartAt: '',
+    timeEndAt: '',
+    interval: '',
+    allDays: false,
+    checkBoxMon: false,
+    checkBoxTue: false,
+    checkBoxWed: false,
+    checkBoxThu: false,
+    checkBoxFri: false,
+    checkBoxSat: false,
+    checkBoxSun: false,
+  };
+
   constructor(props) {
     super(props);
-    this.state = {
-      title: '',
-      message_notification: '',
-      startAt: '',
-      endAt: '',
-      timeStartAt: '',
-      timeEndAt: '',
-      interval: '',
-      allDays: false,
-      checkBoxMon: false,
-      checkBoxTue: false,
-      checkBoxWed: false,
-      checkBoxThu: false,
-      checkBoxFri: false,
-      checkBoxSat: false,
-      checkBoxSun: false,
-    };
+    this.state = this.initialState;
     this.handleChange = this.handleChange.bind(this);
     this.setDatabase();
   }
@@ -89,10 +93,12 @@ class Home extends Component {
   }));
 
   save() {
-    this.db.insert(this.state);
-    this.notify();
-    this.db._setReminderToDay();
-    
+    if(this.validateInputs()) {
+      this.db.insert(this.state);
+      this.notify();
+      this.db._setReminderToDay();
+      this.resetFields();
+    }
   }
 
   notify = () => {
@@ -107,6 +113,79 @@ class Home extends Component {
     this.setState({ open: false });
   };
 
+  _adjustValuesOnReset(key) {
+    let value = String(key[0]);
+    if (value.startsWith('check')) {
+      return false;
+    } else if (value.startsWith('allDays')) {
+      return false;
+    }
+    
+    return '';
+  }
+
+  validateInputs() {
+    if (this.state.title === '') {
+      ipc.send('dialog-error', '- Title must be informed.')
+      return false;
+    }
+
+    if (this.state.message_notification === '') {
+      ipc.send('dialog-error', '- Message notification must be informed.')
+      return false;
+    }
+
+    if (this.state.startAt === '') {
+      ipc.send('dialog-error', '- Date start at must be informed.')
+      return false;
+    }
+
+    if (this.state.endAt === '') {
+      ipc.send('dialog-error', '- Date end at must be informed.')
+      return false;
+    }
+
+    if (this.state.timeStartAt === '') {
+      ipc.send('dialog-error', '- Time start at must be informed.')
+      return false;
+    }
+
+    if (this.state.timeEndAt === '') {
+      ipc.send('dialog-error', '- Time end at must be informed.')
+      return false;
+    }
+
+    if (this.state.interval === '') {
+      ipc.send('dialog-error', '- Interval must be informed.')
+      return false;
+    }
+
+    if (!this.state.allDays && (
+         !this.state.checkBoxMon 
+      && !this.state.checkBoxTue 
+      && !this.state.checkBoxWed 
+      && !this.state.checkBoxThu 
+      && !this.state.checkBoxFri 
+      && !this.state.checkBoxSat 
+      && !this.state.checkBoxSun )) {
+      ipc.send('dialog-error', '- Some day must be select or all day.')
+      return false;
+    }
+
+    return true;
+  }
+
+  resetFields = () => { 
+    document.getElementById("form").reset();
+    Object.keys(this.state).map((key, index) => {
+      this.setState({[key] : this._adjustValuesOnReset([key])});
+   });
+  }
+
+  showAlert() {
+    return this.render(<Alert style={{marginBottom:10}} onClose={() => {}}>This is a success alert — check it out!</Alert>)
+  }
+
   render() {
     return (
       <>
@@ -117,7 +196,7 @@ class Home extends Component {
           <p>
             This is a simple reminder to help you a control your reminder.
           </p>
-          <Form>
+          <Form id="form">
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Control name="title" value={this.state.value} onChange={this.handleChange} type="text" placeholder="Title" />

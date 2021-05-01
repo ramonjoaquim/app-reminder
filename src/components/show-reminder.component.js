@@ -155,6 +155,24 @@ class ShowReminder extends Component {
 
           <TableContainer component={Paper}>
             <Table className={this.classes.table} size="small" aria-label="a dense table">
+            <TableBody>
+                  <TableRow >
+                    <TableCell component="th" align="left" scope="row">
+                      Title
+                    </TableCell>
+                    <TableCell component="th" align="left" scope="row">
+                      Message
+                    </TableCell> 
+                    <TableCell component="th" align="center" scope="row">
+                      Time to reminder
+                    </TableCell> 
+                    <TableCell component="th" align="center" scope="row">
+                      Days to reminder
+                    </TableCell> 
+                    <TableCell component="th" align="left" scope="row">
+                    </TableCell>
+                  </TableRow>
+              </TableBody>
               <TableBody>
                 {this.state.rows.map((row) => (
                   <TableRow key={row.title}>
@@ -164,7 +182,7 @@ class ShowReminder extends Component {
                     <TableCell component="th" scope="row">
                       {row.message_notification}
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell component="th" align="center" scope="row">
                       {row.startAt} {row.timeStartAt} à {row.endAt} {row.timeEndAt}
                     </TableCell>
                     <TableCell align="center">

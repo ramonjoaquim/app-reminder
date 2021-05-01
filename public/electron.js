@@ -1,5 +1,5 @@
 const electron = require('electron');
-const { ipcMain, app, Menu, Tray, Notification } = electron;
+const { ipcMain, app, Menu, Tray, Notification, dialog } = electron;
 const { BrowserWindow } = electron;
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -95,6 +95,21 @@ ipcMain.on('minimise', () => {
 ipcMain.on('notification', (_event, title, message) => {
   showNotification(title, message);
 });
+
+ipcMain.on('dialog-error', (event, message) => {
+  const options = {
+    type: 'error',
+    title: 'Reminder validation',
+    message: 'Ops, something wrong...',
+    detail: message,
+    icon: path.join(__dirname, './icon.png'),
+    noLink:false,
+    buttons: ['ok']
+  }
+  dialog.showMessageBoxSync(mainWindow, options, (index) => {
+    event.sender.send('dialog-error', index)
+  })
+})
 
 //App listeners
 //app.on('ready', createWindow);

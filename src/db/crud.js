@@ -45,6 +45,7 @@ class Crud {
     let paramString = "?";
     delete reminder.disableCheckBox;
     delete reminder.open;
+    delete reminder.messageReminder;
     for (var i = 0; i < Object.keys(reminder).length -1 ; i ++) paramString += ",?";  
     //console.log('insert into reminder VALUES ('+paramString+')', Object.values(reminder));
     
