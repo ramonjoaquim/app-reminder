@@ -1,5 +1,5 @@
 const electron = require('electron');
-const { ipcMain, app, Menu, Tray, Notification, ipcRenderer } = electron;
+const { ipcMain, app, Menu, Tray, Notification } = electron;
 const { BrowserWindow } = electron;
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -180,8 +180,6 @@ function createWindow() {
   });
 
 }
-
-var chamadaOnStart = true;
 
 //crons
 var setRemindersToDay = new CronJob('0 0 * * *',  function() {

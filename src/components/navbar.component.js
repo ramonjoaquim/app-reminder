@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Navbar, Nav, Form, ButtonGroup, ButtonToolbar, Badge } from 'react-bootstrap';
+import { Navbar, Nav, Form, ButtonGroup, ButtonToolbar, Badge } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import CloseIcon from '@material-ui/icons/Close';
 import RemoveSharpIcon from '@material-ui/icons/RemoveSharp';
