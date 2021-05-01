@@ -57,6 +57,14 @@ body {
   font-family: 'Gloria Hallelujah', cursive;
 }
 
+button{
+  outline: none !important;
+}
+
+input {
+  outline: none !important;
+}
+
 label > span {
   font-family: 'Gloria Hallelujah', cursive !important;
 }
@@ -120,6 +128,28 @@ label{
 
 .my-button {
   width: 20px;height: 10px;
+  margin-left: 0px;
+  cursor: pointer;
+}
+
+.my-button-close {
+  width: 20px;height: 10px;
+  margin-left: 0px;
+  padding-left: 4px;
+  margin-left: -15px;
+  cursor: pointer;
+}
+
+.my-button:hover {
+  color: white;
+}
+
+.my-button-close:hover {
+  color: white;
+}
+
+.not-allowed {
+  cursor: not-allowed;
 }
 
 .titlebar {

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Navbar, Nav, Form, ButtonGroup, ButtonToolbar, Badge } from 'react-bootstrap';
 import { Link } from "react-router-dom";
+import CloseIcon from '@material-ui/icons/Close';
+import RemoveSharpIcon from '@material-ui/icons/RemoveSharp';
 import '../App.css';
 const ipc = window.require('electron').ipcRenderer
 
@@ -37,14 +39,11 @@ class MyNavBar extends Component {
         <Navbar variant="dark" className="fixed-nav-bar r-dark">
           <Form inline>
           <ButtonToolbar aria-label="Toolbar with button groups">
-            <ButtonGroup size="sm" className="mr-2">
-              <Button variant="success" className="my-button" title="Minimise" onClick={() => this.minimiseWindow()}></Button>
-            </ButtonGroup>
-            <ButtonGroup size="sm" className="mr-2">
-              <Button variant="warning" className="my-button" title="Maximise" onClick={() => this.maximiseWindow()}></Button>
-            </ButtonGroup>
             <ButtonGroup size="sm">
-              <Button variant="danger" className="my-button" title="Close" onClick={() => this.closeWindow()}></Button>
+              <CloseIcon variant="danger" className="my-button-close" title="Close" onClick={() => this.closeWindow()}></CloseIcon>
+            </ButtonGroup>
+            <ButtonGroup size="sm" className="mr-2">
+              <RemoveSharpIcon variant="success" className="my-button" title="Minimise" onClick={() => this.minimiseWindow()}></RemoveSharpIcon>
             </ButtonGroup>
             </ButtonToolbar>
           </Form>

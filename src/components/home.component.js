@@ -6,7 +6,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
-import Promise from "bluebird";
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -19,7 +18,6 @@ const ipc = window.require('electron').ipcRenderer
 const AppDAO = require('../db/dao').default;
 const Crud = require('../db/crud').default;
 class Home extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -41,28 +39,11 @@ class Home extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.setDatabase();
-    this.loadData();
   }
 
   setDatabase() {
-    this.dao = new AppDAO('./database.sqlite3');
+    this.dao = new AppDAO();
     this.db = new Crud(this.dao);
-    this.db.createTable()
-      .then(() => {
-        console.log('db is created...')
-      })
-      .catch((err) => {
-        console.log('Error: ')
-        console.log(JSON.stringify(err))
-      });
-  }
-
-  loadData() {
-    var getAllData = this.db.getAll();
-
-    Promise.all(getAllData).then((data) => {
-      console.log(data.length);
-    })
   }
 
   getCheckboxValue(event) {
@@ -108,10 +89,10 @@ class Home extends Component {
   }));
 
   save() {
-    console.log(this.state);
     this.db.insert(this.state);
-    this.loadData();
     this.notify();
+    this.db._setReminderToDay();
+    
   }
 
   notify = () => {
@@ -230,7 +211,7 @@ class Home extends Component {
           open={this.state.open}
           autoHideDuration={6000}
           onClose={this.closeNotify}
-          message="Created!"
+          message="Reminder created!"
           action={
             <React.Fragment>
               <IconButton size="small" aria-label="close" color="secondary" onClick={this.closeNotify}>

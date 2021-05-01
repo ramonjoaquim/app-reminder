@@ -1,3 +1,4 @@
+/* eslint-disable react/no-direct-mutation-state */
 import React, { Component } from 'react';
 import { Jumbotron } from 'react-bootstrap';
 import { Link } from "react-router-dom";
@@ -13,12 +14,8 @@ import Promise from "bluebird";
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-
-
 import '../App.css';
 import Logo from '../assets/icon.png';
-
-const ipc = window.require('electron').ipcRenderer
 
 const AppDAO = require('../db/dao').default;
 const Crud = require('../db/crud').default;
@@ -30,23 +27,19 @@ class ShowReminder extends Component {
     this.state = {
       rows: [],
       open: false,
-      setOpen: false
+      setOpen: false,
+      anchorEl: null,
+      openPop: null,
+      currentIdRow: null,
+      weekDays: ''
     };
     this.setDatabase();
     this.loadData();
   }
 
   setDatabase() {
-    this.dao = new AppDAO('./database.sqlite3');
+    this.dao = new AppDAO();
     this.db = new Crud(this.dao);
-    this.db.createTable()
-      .then(() => {
-        console.log('db is created...')
-      })
-      .catch((err) => {
-        console.log('Error: ')
-        console.log(JSON.stringify(err))
-      });
   }
 
   loadData() {
@@ -59,15 +52,26 @@ class ShowReminder extends Component {
 
   deleteItem(id) {
     this.db.delete(id);
+    this.db.deleteSheduleByReminderId(id);
     this.loadData();
     this.notify();
   }
 
-  classes = makeStyles({
+  eraseAll() {
+    this.db.dropAllReminder();
+    this.db.dropAllSheduler();
+    this.loadData();
+    this.notify();
+  }
+
+  classes = makeStyles((theme) => ({
     table: {
       minWidth: 650,
     },
-  });
+    typography: {
+      padding: theme.spacing(2),
+    },
+  }));
 
   notify = () => {
     this.setState({ open: true });
@@ -80,6 +84,57 @@ class ShowReminder extends Component {
 
     this.setState({ open: false });
   };
+
+  openPopOver(id) {
+    this.setState({ currentIdRow: this.state.currentIdRow = id });
+    this.setState({ anchorEl: this.state.anchorEl = true });
+    this.setState({ openPop: this.state.openPop = Boolean(this.state.anchorEl) });
+  };
+
+  closePopOver = () => {
+    this.setState({ anchorEl: this.state.anchorEl = false });
+    this.setState({ openPop: this.state.openPop = Boolean(this.state.anchorEl) });
+  };
+
+  formatWeekDays(row) {
+    let resultFomated = '';
+
+    if (row.allDays) {
+      resultFomated = 'All days';
+    } else {
+
+      if (row.checkBoxMon) {
+        resultFomated += 'Mon';
+      }
+
+      if (row.checkBoxTue) {
+        resultFomated += resultFomated === '' ? 'Tue' : ', Tue';
+      }
+
+      if (row.checkBoxWed) {
+        resultFomated += resultFomated === '' ? 'Wed' : ', Wed';
+      }
+
+      if (row.checkBoxThu) {
+        resultFomated += resultFomated === '' ? 'Thu' : ', Thu';
+      }
+
+      if (row.checkBoxFri) {
+        resultFomated += resultFomated === '' ? 'Sex' : ', Sex';
+      }
+
+      if (row.checkBoxSat) {
+        resultFomated += resultFomated === '' ? 'Sat' : ', Sat';
+      }
+
+      if (row.checkBoxSun) {
+        resultFomated += resultFomated === '' ? 'Sun' : ', Sun';
+      }
+    }
+
+    return resultFomated;
+  }
+
 
   render() {
     return (
@@ -94,6 +149,8 @@ class ShowReminder extends Component {
             <Link style={{ marginLeft: 20 }} to="/">
               <Button size="small" color="secondary">Back</Button>
             </Link>
+
+            <Button className="float-right" size="small" variant="contained" color="secondary" onClick={() => this.eraseAll()}>Delete All</Button>
           </p>
 
           <TableContainer component={Paper}>
@@ -108,16 +165,10 @@ class ShowReminder extends Component {
                       {row.message_notification}
                     </TableCell>
                     <TableCell component="th" scope="row">
-                      {row.startAt}
+                      {row.startAt} {row.timeStartAt} à {row.endAt} {row.timeEndAt}
                     </TableCell>
-                    <TableCell component="th" scope="row">
-                      à
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {row.endAt}
-                    </TableCell>
-                    <TableCell align="right">
-                      <Button variant="contained" size="small" color="dark">Details</Button>
+                    <TableCell align="center">
+                      {this.formatWeekDays(row)}
                     </TableCell>
                     <TableCell align="right">
                       <Button variant="contained" size="small" onClick={() => this.deleteItem(row.id)} color="dark">delete</Button>
@@ -142,7 +193,7 @@ class ShowReminder extends Component {
           open={this.state.open}
           autoHideDuration={6000}
           onClose={this.closeNotify}
-          message="Deleted!"
+          message="Reminder deleted!"
           action={
             <React.Fragment>
               <IconButton size="small" aria-label="close" color="secondary" onClick={this.closeNotify}>
