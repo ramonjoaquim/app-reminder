@@ -196,6 +196,7 @@ ipc.on('get-schedule', async () => {
   var dao = new AppDAO();
   var c = new Crud(dao);
   var now = moment(new Date()).format('YYYY-MM-DD HH:mm');
+  var day = moment(new Date()).day();
   
   await c.getShedule().then((data) => {
     data.forEach(element => {
@@ -204,70 +205,62 @@ ipc.on('get-schedule', async () => {
           if (_.first(reminder).allDays === 1) {
             ipc.send('notification', _.first(reminder).title, _.first(reminder).message_notification);
             c.deleteShedule(element.id).then(() => {
-              //remove from foreach
               data.splice(element, 1);
             });
             
             return;
           } else {
-            if (_.first(reminder).checkBoxSun === 1 && now.day() === 0) {
+            if (_.first(reminder).checkBoxSun === 1 && day === 0) {
               ipc.send('notification', _.first(reminder).title, _.first(reminder).message_notification);
               c.deleteShedule(element.id).then(() => {
-                //remove from foreach
                 data.splice(element, 1);
               });
               return;
             }
 
-            if (_.first(reminder).checkBoxMon === 1 && now.day() === 1) {
+            if (_.first(reminder).checkBoxMon === 1 && day === 1) {
               ipc.send('notification', _.first(reminder).title, _.first(reminder).message_notification);
               c.deleteShedule(element.id).then(() => {
-                //remove from foreach
                 data.splice(element, 1);
               });
               return;
             }
 
-            if (_.first(reminder).checkBoxTue === 1 && now.day() === 2) {
+            if (_.first(reminder).checkBoxTue === 1 && day === 2) {
               ipc.send('notification', _.first(reminder).title, _.first(reminder).message_notification);
               c.deleteShedule(element.id).then(() => {
-                //remove from foreach
                 data.splice(element, 1);
               });
               return;
             }
 
-            if (_.first(reminder).checkBoxWed === 1 && now.day() === 3) {
+            if (_.first(reminder).checkBoxWed === 1 && day === 3) {
               ipc.send('notification', _.first(reminder).title, _.first(reminder).message_notification);
               c.deleteShedule(element.id).then(() => {
-                //remove from foreach
                 data.splice(element, 1);
               });
               return;
             }
 
-            if (_.first(reminder).checkBoxThu === 1 && now.day() === 4) {
+            if (_.first(reminder).checkBoxThu === 1 && day === 4) {
               ipc.send('notification', _.first(reminder).title, _.first(reminder).message_notification);
               c.deleteShedule(element.id).then(() => {
-                //remove from foreach
                 data.splice(element, 1);
               });
               return;
             }
 
-            if (_.first(reminder).checkBoxFri === 1 && now.day() === 5) {
+            if (_.first(reminder).checkBoxFri === 1 && day === 5) {
               ipc.send('notification', _.first(reminder).title, _.first(reminder).message_notification);
               c.deleteShedule(element.id).then(() => {
-                //remove from foreach
                 data.splice(element, 1);
               });
               return;
             }
 
-            if (_.first(reminder).checkBoxSat === 1 && now.day() === 6) {
+            if (_.first(reminder).checkBoxSat === 1 && day === 6) {
               ipc.send('notification', _.first(reminder).title, _.first(reminder).message_notification);
               c.deleteShedule(element.id).then(() => {
-                //remove from foreach
                 data.splice(element, 1);
               });
               return;

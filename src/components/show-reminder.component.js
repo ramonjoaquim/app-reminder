@@ -140,10 +140,7 @@ class ShowReminder extends Component {
     return (
       <>
         <Jumbotron>
-          <h1>
-            <img width="7%" height="auto" className="img-responsive" src={Logo} alt="logo" />
-          &ensp;My reminders
-          </h1>
+          <h1>My reminders</h1>
           <p>
             You have {this.state.rows.length} reminders.
             <Link style={{ marginLeft: 20 }} to="/">

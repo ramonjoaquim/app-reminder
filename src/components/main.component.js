@@ -9,6 +9,7 @@ class Main extends Component {
       <Switch>
         <Route exact path='/' component={Home}></Route>
         <Route exact path='/show-reminders' component={ShowReminder}></Route>
+        <Route path="*" component={Home} />
       </Switch>
     );
   }

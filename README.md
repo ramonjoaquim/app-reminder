@@ -6,7 +6,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `yarn start`
+### `yarn dev`
 
 Runs the app in the development mode.\
 The app will open a application electron with devtools opened.
@@ -14,6 +14,9 @@ The app will open a application electron with devtools opened.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
+### `yarn build`
+
+This will create two folders on root path, dist and build, the dist folder contains the .exe installer.
 
 ## Screenshot
 ![image info](./src/assets/reminder-app-screen.png)

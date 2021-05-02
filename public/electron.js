@@ -43,34 +43,41 @@ ipcMain.on('put-in-tray', (event) => {
   const iconPath = path.join(__dirname, 'icon.png');
   appIcon = new Tray(iconPath);
 
-  const contextMenu = Menu.buildFromTemplate([{
-    label: 'Reminder',
-    submenu: [
-      {
-        label: 'Show App',
-        click: () => {
+  const contextMenu = Menu.buildFromTemplate([
+    { 
+      label: 'Reminder App',
+      enabled:false
+    },
+    {
+      type:'separator'
+    },
+    {
+      label: 'Check for updates...',
+      enabled:false
+    },
+    {
+      type:'separator'
+    },
+    {
+      label: 'Quit app',
+      click: () => {
+        if (appIcon) {
           appIcon.destroy();
-          mainWindow.show();
         }
-      },
-      {
-        label: 'Quit app',
-        click: () => {
-          if (appIcon) {
-            appIcon.destroy();
-          }
 
-          app.quit();
-        }
+        app.quit();
       }
-    ]
-    
-  }]);
+    }]);
 
   appIcon.setToolTip('Reminder app')
   appIcon.setContextMenu(contextMenu);
   mainWindow.hide();
   showNotification('Running on background...');
+
+  appIcon.on('click', () => {
+    appIcon.destroy();
+    mainWindow.show();
+  });
 });
 
 ipcMain.on('remove-tray', () => {
@@ -164,8 +171,7 @@ function createWindow() {
     minWidth: 800,
     frame: false,
     icon: iconPath,
-    //resizable: isDev ? true : false,
-    resizable: false,
+    resizable: isDev ? true : false,
     fullscreen: false,
     webPreferences: {
       nodeIntegration: true,
@@ -215,8 +221,7 @@ var setRemindersToDay = new CronJob('0 0 * * *',  function() {
 
 var getShedule = new CronJob('* * * * *',  function() {
   //chamar aqui a cada minuto
- if (mainWindow.webContents) {
-  console.log('verificando reminder');
+ if (mainWindow) {
   mainWindow.webContents.send("get-schedule", "");
  }
 

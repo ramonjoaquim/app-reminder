@@ -191,9 +191,7 @@ class Home extends Component {
     return (
       <>
         <Jumbotron>
-          <h1>
-            <img width="7%" height="auto" className="img-responsive" src={Logo} alt="logo" />
-          &ensp;Welcome!</h1>
+          <h1>Create your reminder!</h1>
           <p>
             This is a simple reminder to help you a control your reminder.
           </p>
