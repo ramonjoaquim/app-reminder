@@ -125,7 +125,6 @@ ipcMain.on('dialog-error', (event, message) => {
 });
 
 ipcMain.on('got-to-page', (_event, url) => {
-  debugger;
   shell.openExternal(url);
 });
 
