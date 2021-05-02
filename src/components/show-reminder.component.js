@@ -15,7 +15,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import '../App.css';
-import Logo from '../assets/icon.png';
 
 const AppDAO = require('../db/dao').default;
 const Crud = require('../db/crud').default;

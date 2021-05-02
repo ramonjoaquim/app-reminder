@@ -12,7 +12,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import Alert from '@material-ui/lab/Alert';
 
 import '../App.css';
-import Logo from '../assets/icon.png';
 
 const ipc = window.require('electron').ipcRenderer;
 
