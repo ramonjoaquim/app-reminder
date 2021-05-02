@@ -1,6 +1,6 @@
 {
   "name": "reminder-app",
-  "version": "0.2.0-beta",
+  "version": "0.2.0-beta.1",
   "license": "MIT",
   "description": "Reminder app",
   "author": "Ramon J. Limas <limasramon3@gmail.com>",
@@ -59,8 +59,15 @@
       ]
     },
     "win": {
-      "target": "NSIS",
+      "target": "nsis",
       "icon": "src/assets/icon.ico"
+    },
+    "nsis": {
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall":true,
+      "oneClick": false,
+      "perMachine": true
     }
   },
   "homepage": "./",
