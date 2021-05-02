@@ -1,4 +1,5 @@
 const electron = require('electron');
+const { autoUpdater } = require('electron-updater');
 const { ipcMain, app, Menu, Tray, Notification, dialog, shell } = electron;
 const { BrowserWindow } = electron;
 const path = require('path');
@@ -128,6 +129,10 @@ ipcMain.on('got-to-page', (_event, url) => {
   shell.openExternal(url);
 });
 
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall();
+});
+
 //App listeners
 //app.on('ready', createWindow);
 
@@ -152,6 +157,14 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+autoUpdater.on('update-available', () => {
+  mainWindow.webContents.send('update_available');
+});
+
+autoUpdater.on('update-downloaded', () => {
+  mainWindow.webContents.send('update_downloaded');
 });
 
 //functions
@@ -200,6 +213,10 @@ function createWindow() {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
+  });
+
+  mainWindow.once('ready-to-show', () => {
+    autoUpdater.checkForUpdatesAndNotify();
   });
 
   mainWindow.webContents.on('did-finish-load', () => {
