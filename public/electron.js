@@ -1,5 +1,5 @@
 const electron = require('electron');
-const { ipcMain, app, Menu, Tray, Notification, dialog } = electron;
+const { ipcMain, app, Menu, Tray, Notification, dialog, shell } = electron;
 const { BrowserWindow } = electron;
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -122,7 +122,12 @@ ipcMain.on('dialog-error', (event, message) => {
   dialog.showMessageBoxSync(mainWindow, options, (index) => {
     event.sender.send('dialog-error', index)
   })
-})
+});
+
+ipcMain.on('got-to-page', (_event, url) => {
+  debugger;
+  shell.openExternal(url);
+});
 
 //App listeners
 //app.on('ready', createWindow);

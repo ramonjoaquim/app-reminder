@@ -29,10 +29,6 @@ class MyNavBar extends Component {
     ipc.send('maximise');
   }
 
-  about() {
-    console.log("about click")
-  }
-
   render() {
     return (
       <>
@@ -50,7 +46,9 @@ class MyNavBar extends Component {
           <Nav className="mr-auto titlebar">
           <span>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</span>
           </Nav>
+          <Link to="/about">
             <Badge className="aboutBadge" variant="light" onClick={() => this.about}>About</Badge>
+          </Link>
           <span>&ensp;</span>
           <Link to="/show-reminders">
             <Badge variant="light">Show my reminders</Badge>

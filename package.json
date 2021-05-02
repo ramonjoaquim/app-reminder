@@ -1,6 +1,6 @@
 {
   "name": "reminder-app",
-  "version": "0.1.15-beta",
+  "version": "0.2.0-beta",
   "license": "MIT",
   "description": "Reminder app",
   "author": "Ramon J. Limas <limasramon3@gmail.com>",
@@ -68,7 +68,11 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "no-debugger":"error",
+      "no-console":"warn"
+    }
   },
   "browserslist": {
     "production": [
