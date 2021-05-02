@@ -38,7 +38,7 @@
       width: 200px;
       padding: 20px;
       border-radius: 5px;
-      background-color: white;
+      background-color: rgb(7 74 68 / 98%);
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     }
     .hidden {
@@ -46,26 +46,24 @@
     }
     </style>
     <script>
-      const notification = document.getElementById('notification');
-      const message = document.getElementById('message');
-      const restartButton = document.getElementById('restart-button');
+      const ipcRenderer = window.require('electron').ipcRenderer;
       
       ipcRenderer.on('update_available', () => {
         ipcRenderer.removeAllListeners('update_available');
-        message.innerText = 'A new update is available. Downloading now...';
-        notification.classList.remove('hidden');
+        document.getElementById('message').innerHTML  = 'A new update is available. Downloading now...';
+        document.getElementById('notification').classList.remove('hidden');
       });
       
       ipcRenderer.on('update_downloaded', () => {
         ipcRenderer.removeAllListeners('update_downloaded');
-        message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
-        restartButton.classList.remove('hidden');
-        notification.classList.remove('hidden');
+        document.getElementById('message').innerHTML  = 'Update Downloaded. It will be installed on restart. Restart now?';
+        document.getElementById('restart-button').classList.remove('hidden');
+        document.getElementById('notification').classList.remove('hidden');
       });
 
 
       function closeNotification() {
-        notification.classList.add('hidden');
+        document.getElementById('notification').classList.add('hidden');
       }
       
       function restartApp() {
@@ -79,12 +77,15 @@
     <div id="root"></div>
     <div id="notification" class="hidden">
       <p id="message"></p>
-      <button id="close-button" onClick="closeNotification()">
-        Close
-      </button>
-      <button id="restart-button" onClick="restartApp()" class="hidden">
-        Restart
-      </button>
+      <div class="row">
+        <button id="close-button" onClick="closeNotification()" style="margin-left: 4vh;" class="btn btn-outline-info btn-sm">
+          Close
+        </button>
+        <button id="restart-button" onClick="restartApp()" style="margin-left: 5px;" class="hidden btn btn-outline-info btn-sm">
+          Restart
+        </button>
+      </div>
+      
     </div>
     <!--
       This HTML file is a template.
