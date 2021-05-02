@@ -14,6 +14,7 @@ import Promise from "bluebird";
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import moment from 'moment';
 import '../App.css';
 
 const AppDAO = require('../db/dao').default;
@@ -95,6 +96,10 @@ class ShowReminder extends Component {
     this.setState({ openPop: this.state.openPop = Boolean(this.state.anchorEl) });
   };
 
+  formatDate(date) {
+    return moment(date).format('DD/MM/yyyy');
+  }
+
   formatWeekDays(row) {
     let resultFomated = '';
 
@@ -163,6 +168,9 @@ class ShowReminder extends Component {
                       Time to reminder
                     </TableCell> 
                     <TableCell component="th" align="center" scope="row">
+                      Interval
+                    </TableCell> 
+                    <TableCell component="th" align="center" scope="row">
                       Days to reminder
                     </TableCell> 
                     <TableCell component="th" align="left" scope="row">
@@ -179,7 +187,10 @@ class ShowReminder extends Component {
                       {row.message_notification}
                     </TableCell>
                     <TableCell component="th" align="center" scope="row">
-                      {row.startAt} {row.timeStartAt} à {row.endAt} {row.timeEndAt}
+                      {this.formatDate(row.startAt)} {row.timeStartAt} à {this.formatDate(row.endAt)} {row.timeEndAt}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.interval}
                     </TableCell>
                     <TableCell align="center">
                       {this.formatWeekDays(row)}
