@@ -1,16 +1,16 @@
 const sqlite3 = window.require('sqlite3');
 const Promise = window.require('bluebird');
-const DB_PATH = 'src/db/database.sqlite3';
+const remote = window.require('electron').remote;   
+const ipc = window.require('electron').ipcRenderer;  
 class AppDAO {
     constructor() {
-        this.db = new sqlite3.Database(DB_PATH, (err) => {
+        this.db = new sqlite3.Database(remote.getGlobal('PATH_DB').value, (err) => {
             if (err) {
-                console.log('Could not connect to database', err);
+              ipc.send('dialog-error', 'Could not connect to database.');
             } else {
                 //console.log('Connected to database');
             }
-        })
-        
+        });
     }
  
     run(sql, params = []) {

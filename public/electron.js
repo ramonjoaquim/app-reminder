@@ -6,6 +6,12 @@ const isDev = require('electron-is-dev');
 const operationanSystem = require('os');
 const CronJob = require('cron').CronJob;
 
+if (isDev) {
+  global.PATH_DB = {value: 'src/db/reminder.db'};
+} else {
+  global.PATH_DB = {value: app.getPath('userData')+'/reminder.db'};
+}
+
 let mainWindow;
 let appIcon = null;
 let loadingScreen;
@@ -158,12 +164,14 @@ function createWindow() {
     minWidth: 800,
     frame: false,
     icon: iconPath,
-    resizable: isDev ? true : false,
+    //resizable: isDev ? true : false,
+    resizable: false,
     fullscreen: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      webSecurity: true
+      webSecurity: true,
+      enableRemoteModule: true
     },
     show: false
   });
@@ -190,8 +198,11 @@ function createWindow() {
       loadingScreen.close();
     }
     mainWindow.show();
-    mainWindow.webContents.send("init-db");
-    mainWindow.webContents.send("set-reminders-off-day", "");
+    setTimeout(() => {
+      mainWindow.webContents.send("init-db");
+      mainWindow.webContents.send("set-reminders-off-day", "");
+    }, 5000);
+    
   });
 
 }

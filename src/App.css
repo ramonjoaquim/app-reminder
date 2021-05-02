@@ -127,13 +127,11 @@ label{
 }
 
 .my-button {
-  width: 20px;height: 10px;
   margin-left: 0px;
   cursor: pointer;
 }
 
 .my-button-close {
-  width: 20px;height: 10px;
   margin-left: 0px;
   padding-left: 4px;
   margin-left: -15px;

@@ -14,7 +14,7 @@ import Alert from '@material-ui/lab/Alert';
 import '../App.css';
 import Logo from '../assets/icon.png';
 
-const ipc = window.require('electron').ipcRenderer
+const ipc = window.require('electron').ipcRenderer;
 
 const AppDAO = require('../db/dao').default;
 const Crud = require('../db/crud').default;
@@ -126,37 +126,37 @@ class Home extends Component {
 
   validateInputs() {
     if (this.state.title === '') {
-      ipc.send('dialog-error', '- Title must be informed.')
+      ipc.send('dialog-error', '- Title must be informed.');
       return false;
     }
 
     if (this.state.message_notification === '') {
-      ipc.send('dialog-error', '- Message notification must be informed.')
+      ipc.send('dialog-error', '- Message notification must be informed.');
       return false;
     }
 
     if (this.state.startAt === '') {
-      ipc.send('dialog-error', '- Date start at must be informed.')
+      ipc.send('dialog-error', '- Date start at must be informed.');
       return false;
     }
 
     if (this.state.endAt === '') {
-      ipc.send('dialog-error', '- Date end at must be informed.')
+      ipc.send('dialog-error', '- Date end at must be informed.');
       return false;
     }
 
     if (this.state.timeStartAt === '') {
-      ipc.send('dialog-error', '- Time start at must be informed.')
+      ipc.send('dialog-error', '- Time start at must be informed.');
       return false;
     }
 
     if (this.state.timeEndAt === '') {
-      ipc.send('dialog-error', '- Time end at must be informed.')
+      ipc.send('dialog-error', '- Time end at must be informed.');
       return false;
     }
 
     if (this.state.interval === '') {
-      ipc.send('dialog-error', '- Interval must be informed.')
+      ipc.send('dialog-error', '- Interval must be informed.');
       return false;
     }
 
@@ -168,7 +168,7 @@ class Home extends Component {
       && !this.state.checkBoxFri 
       && !this.state.checkBoxSat 
       && !this.state.checkBoxSun )) {
-      ipc.send('dialog-error', '- Some day must be select or all day.')
+      ipc.send('dialog-error', '- Some day must be select or all day.');
       return false;
     }
 
@@ -177,6 +177,7 @@ class Home extends Component {
 
   resetFields = () => { 
     document.getElementById("form").reset();
+    // eslint-disable-next-line array-callback-return
     Object.keys(this.state).map((key, index) => {
       this.setState({[key] : this._adjustValuesOnReset([key])});
    });
