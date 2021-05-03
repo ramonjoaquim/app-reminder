@@ -124,7 +124,7 @@ class ShowReminder extends Component {
       }
 
       if (row.checkBoxFri) {
-        resultFomated += resultFomated === '' ? 'Sex' : ', Sex';
+        resultFomated += resultFomated === '' ? 'Fri' : ', Fri';
       }
 
       if (row.checkBoxSat) {
