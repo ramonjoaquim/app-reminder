@@ -54,7 +54,10 @@ ipcMain.on('put-in-tray', (event) => {
     },
     {
       label: 'Check for updates...',
-      enabled:false
+      enabled: false,
+      click: () => {
+        autoUpdater.checkForUpdatesAndNotify();
+      }
     },
     {
       type:'separator'
@@ -132,6 +135,10 @@ ipcMain.on('got-to-page', (_event, url) => {
 ipcMain.on('restart_app', () => {
   autoUpdater.quitAndInstall();
 });
+
+ipcMain.on('check-updates', () => {
+  autoUpdater.checkForUpdatesAndNotify();
+})
 
 //App listeners
 //app.on('ready', createWindow);
@@ -213,10 +220,6 @@ function createWindow() {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
-  });
-
-  mainWindow.once('ready-to-show', () => {
-    autoUpdater.checkForUpdatesAndNotify();
   });
 
   mainWindow.webContents.on('did-finish-load', () => {

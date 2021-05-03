@@ -34,7 +34,11 @@ class About extends Component {
   }));
 
   goToPage(url) {
-    ipc.send('got-to-page', url)
+    ipc.send('got-to-page', url);
+  }
+
+  checkUpdate() {
+    ipc.send('check-updates');
   }
 
   render() {
@@ -70,6 +74,8 @@ class About extends Component {
               <br/> <br/>
               <Typography className={this.classes.title} color="white" gutterBottom>
                 Version: {appVersion}
+                <span>&ensp;&ensp;</span>
+                <Button disabled variant='outlined' size="small" onClick={() => this.checkUpdate()}>Check updates</Button>
               </Typography>
             </CardContent>
           </Card>

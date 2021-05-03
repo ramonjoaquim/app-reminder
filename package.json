@@ -1,10 +1,10 @@
 {
   "name": "reminder-app",
-  "version": "0.2.0-beta.4",
+  "version": "0.2.0-beta.5",
   "license": "MIT",
   "description": "Reminder app",
   "author": "Ramon J. Limas <limasramon3@gmail.com>",
-  "private": true,
+  "private": false,
   "main": "public/electron.js",
   "dependencies": {
     "@date-io/date-fns": "^2.10.8",
@@ -73,7 +73,8 @@
     "publish": [{
       "provider": "github",
       "owner": "ramonjoaquim",
-      "repo": "app-reminder"
+      "repo": "app-reminder",
+      "private": false
   }]
   },
   "homepage": "./",
