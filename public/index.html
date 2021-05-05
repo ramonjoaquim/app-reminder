@@ -66,7 +66,15 @@
         document.getElementById('notification').classList.remove('hidden');
         setTimeout(() => {
           document.getElementById('notification').classList.add('hidden');
-        }, 10000);
+        }, 5000);
+      });
+
+      ipcRenderer.on('update_not_available', () => {
+        document.getElementById('message').innerHTML  = 'No update available, your are in latest version!';
+        document.getElementById('notification').classList.remove('hidden');
+        setTimeout(() => {
+          document.getElementById('notification').classList.add('hidden');
+        }, 5000);
       });
 
 

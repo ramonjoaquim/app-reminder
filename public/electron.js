@@ -177,6 +177,11 @@ autoUpdater.on('update-downloaded', () => {
   mainWindow.webContents.send('update_downloaded');
 });
 
+autoUpdater.on('update-not-available', () => {
+  mainWindow.webContents.send('update_not_available');
+});
+
+
 //functions
 function showNotification (title, message) {
   const notification = {
