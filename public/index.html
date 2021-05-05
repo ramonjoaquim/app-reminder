@@ -61,6 +61,14 @@
         document.getElementById('notification').classList.remove('hidden');
       });
 
+      ipcRenderer.on('checking_updates', () => {
+        document.getElementById('message').innerHTML  = 'Checking updates...';
+        document.getElementById('notification').classList.remove('hidden');
+        setTimeout(() => {
+          document.getElementById('notification').classList.add('hidden');
+        }, 10000);
+      });
+
 
       function closeNotification() {
         document.getElementById('notification').classList.add('hidden');

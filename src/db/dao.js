@@ -7,8 +7,6 @@ class AppDAO {
         this.db = new sqlite3.Database(remote.getGlobal('PATH_DB').value, (err) => {
             if (err) {
               ipc.send('dialog-error', 'Could not connect to database.');
-            } else {
-                //console.log('Connected to database');
             }
         });
     }

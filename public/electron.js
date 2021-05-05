@@ -133,11 +133,14 @@ ipcMain.on('got-to-page', (_event, url) => {
 });
 
 ipcMain.on('restart_app', () => {
-  autoUpdater.quitAndInstall();
+  const isSilent = true;
+  const isForceRunAfter = true; 
+  autoUpdater.quitAndInstall(isSilent, isForceRunAfter); 
 });
 
 ipcMain.on('check-updates', () => {
-  autoUpdater.checkForUpdatesAndNotify();
+  autoUpdater.checkForUpdates();
+  mainWindow.webContents.send('checking_updates');
 })
 
 //App listeners
@@ -238,19 +241,25 @@ function createWindow() {
 }
 
 //crons
-var setRemindersToDay = new CronJob('0 0 * * *',  function() {
-   //chamar aqui toda meia noite os reminders do dia
+var setRemindersToDay = new CronJob('0 */1 * * *',  function() {
+   //Cron job every 1 hours.
   mainWindow.webContents.send("set-reminders-off-day", "");
 }, null, true, 'America/Sao_Paulo');
 
 var getShedule = new CronJob('* * * * *',  function() {
-  //chamar aqui a cada minuto
+  //Cron job every minute.
  if (mainWindow) {
   mainWindow.webContents.send("get-schedule", "");
  }
 
 }, null, true, 'America/Sao_Paulo');
 
+var getUpdates = new CronJob('0 */1 * * *',  function() {
+  //Cron job every 1 hours.
+ autoUpdater.checkForUpdates();
+}, null, true, 'America/Sao_Paulo');
+
 
 setRemindersToDay.start();
 getShedule.start();
+getUpdates.start();

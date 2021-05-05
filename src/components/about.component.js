@@ -75,7 +75,7 @@ class About extends Component {
               <Typography className={this.classes.title} color="white" gutterBottom>
                 Version: {appVersion}
                 <span>&ensp;&ensp;</span>
-                <Button disabled variant='outlined' size="small" onClick={() => this.checkUpdate()}>Check updates</Button>
+                <Button variant='outlined' size="small" onClick={() => this.checkUpdate()}>Check updates</Button>
               </Typography>
             </CardContent>
           </Card>
