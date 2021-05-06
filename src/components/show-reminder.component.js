@@ -148,10 +148,10 @@ class ShowReminder extends Component {
           <p>
             You have {this.state.rows.length} reminders.
             <Link style={{ marginLeft: 20 }} to="/">
-              <Button size="small" color="secondary">Back</Button>
+              <Button size="small" className='buttonSecondary'>Back</Button>
             </Link>
 
-            <Button className="float-right" size="small" variant="contained" color="secondary" onClick={() => this.eraseAll()}>Delete All</Button>
+            <Button className="float-right buttonActionColor" size="small" variant="contained" onClick={() => this.eraseAll()}>Delete All</Button>
           </p>
 
           <TableContainer component={Paper}>
@@ -196,7 +196,7 @@ class ShowReminder extends Component {
                       {this.formatWeekDays(row)}
                     </TableCell>
                     <TableCell align="right">
-                      <Button variant="contained" size="small" onClick={() => this.deleteItem(row.id)} color="dark">delete</Button>
+                      <Button className='buttonSecondary' size="small" onClick={() => this.deleteItem(row.id)} color="dark">delete</Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -206,7 +206,7 @@ class ShowReminder extends Component {
           <br />
 
           <Link style={{ marginRight: 20 }} to="/">
-            <Button size="small" color="secondary">Back</Button>
+            <Button size="small" className='buttonSecondary'>Back</Button>
           </Link>
         </Jumbotron>
 

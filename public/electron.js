@@ -259,7 +259,7 @@ var getShedule = new CronJob('* * * * *',  function() {
 
 }, null, true, 'America/Sao_Paulo');
 
-var getUpdates = new CronJob('0 */1 * * *',  function() {
+var getUpdates = new CronJob('0 0 * * *',  function() {
   //Cron job every 1 hours.
  autoUpdater.checkForUpdates();
 }, null, true, 'America/Sao_Paulo');
