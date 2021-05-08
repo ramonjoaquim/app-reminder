@@ -16,10 +16,11 @@ You will also see any lint errors in the console.
 
 ### `yarn build`
 
-This will create two folders on root path, dist and build, the dist folder contains the .exe installer.
+This will create two folders on root path, dist and build, the dist folder contains the .exe or .deb installer if you running in linux OS.
 
 ## Screenshot
-![image info](./src/assets/reminder-app-screen.png)
+
+comming soon
 
 ## Notice
 app on construction

@@ -73,7 +73,7 @@ a > span {
   font-family: 'Gloria Hallelujah', cursive !important;
 }
 
-h1{
+h1, h2, h3, h4, h5, h6{
   color: white;
   -webkit-user-select: none; /* Safari */        
   -moz-user-select: none; /* Firefox */
@@ -91,7 +91,7 @@ p{
   font-family: 'Gloria Hallelujah', cursive;
 }
 
-label{
+label {
   color: white;
   -webkit-user-select: none; /* Safari */        
   -moz-user-select: none; /* Firefox */
@@ -100,9 +100,27 @@ label{
   font-family: 'Gloria Hallelujah', cursive;
 }
 
-.buttonActionColor{
-  background-color: #00675b !important;
+.buttonActionColor {
+  background-color: #01534a !important;
   color: white !important;
+}
+
+.buttonActionColor:hover {
+  font-family: 'Gloria Hallelujah', cursive;
+  background-color: #05c0b7 !important;
+  color: white !important;
+}
+
+.buttonSecondary {
+  font-family: 'Gloria Hallelujah', cursive;
+  background-color: whitesmoke!important;
+  color: black !important;
+}
+
+.buttonSecondary:hover {
+  font-family: 'Gloria Hallelujah', cursive;
+  background-color: #05c0b7!important;
+  color: whitesmoke !important;
 }
 
 .navbar {
@@ -134,7 +152,6 @@ label{
 .my-button-close {
   margin-left: 0px;
   padding-left: 4px;
-  margin-left: -15px;
   cursor: pointer;
 }
 
@@ -166,3 +183,37 @@ label{
 .r-dark{
   background-color: #00675b;
 }
+
+.MuiMenu-paper {
+  margin-top: -45vh !important;
+  margin-left: -2vh !important;
+}
+
+
+.linkMenuOptions {
+  margin: 8px;
+  font-family: 'Gloria Hallelujah', cursive;
+  background-color: whitesmoke!important;
+  color: black !important;
+  outline: none !important;
+}
+
+.linkMenuOptions:hover {
+  margin: 8px;
+  font-family: 'Gloria Hallelujah', cursive;
+  background-color: whitesmoke!important;
+  color: #009688 !important;
+  outline: none !important;
+}
+
+.cardHome:hover{
+  background-color: #05c0b7!important;
+  color: white;
+  width: 40%;
+  margin-left: 0vh;
+  margin-top: 14vh!important;
+  height: 40vh!important;
+  cursor: pointer;
+  box-shadow: 5px 10px #01534a;
+}
+

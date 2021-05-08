@@ -1,7 +1,6 @@
 /* eslint-disable react/no-direct-mutation-state */
 import React, { Component } from 'react';
 import { Jumbotron } from 'react-bootstrap';
-import { Link } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -147,11 +146,8 @@ class ShowReminder extends Component {
           <h1>My reminders</h1>
           <p>
             You have {this.state.rows.length} reminders.
-            <Link style={{ marginLeft: 20 }} to="/">
-              <Button size="small" color="secondary">Back</Button>
-            </Link>
 
-            <Button className="float-right" size="small" variant="contained" color="secondary" onClick={() => this.eraseAll()}>Delete All</Button>
+            <Button className="float-right buttonActionColor" size="small" variant="contained" onClick={() => this.eraseAll()}>Delete All</Button>
           </p>
 
           <TableContainer component={Paper}>
@@ -196,7 +192,7 @@ class ShowReminder extends Component {
                       {this.formatWeekDays(row)}
                     </TableCell>
                     <TableCell align="right">
-                      <Button variant="contained" size="small" onClick={() => this.deleteItem(row.id)} color="dark">delete</Button>
+                      <Button className='buttonSecondary' size="small" onClick={() => this.deleteItem(row.id)} color="dark">delete</Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -204,10 +200,6 @@ class ShowReminder extends Component {
             </Table>
           </TableContainer>
           <br />
-
-          <Link style={{ marginRight: 20 }} to="/">
-            <Button size="small" color="secondary">Back</Button>
-          </Link>
         </Jumbotron>
 
         <Snackbar
