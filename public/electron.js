@@ -47,7 +47,6 @@ ipcMain.on('put-in-tray', (event) => {
 
   if (global.tray != null && isLinux()) {
     mainWindow.hide();
-    showNotification('Running on background...');
     return;
   }
 
