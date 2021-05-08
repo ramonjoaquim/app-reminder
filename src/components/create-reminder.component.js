@@ -10,6 +10,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Alert from '@material-ui/lab/Alert';
+import { Link } from "react-router-dom";
 
 import '../App.css';
 
@@ -282,7 +283,10 @@ class CreateReminder extends Component {
 
             </FormGroup>
             <div className={this.classes.root} style={{ textAlign: 'right' }}>
-              <Button variant="contained" size="small" className="buttonSecondary" onClick={() => this.clearAllInputs()}>Clear</Button>
+              <Link to='/show-reminders'>
+                <Button variant="contained" size="small" className="buttonSecondary">go to reminders</Button>
+              </Link>
+              <Button variant="contained" size="small" className="buttonSecondary" style={{ marginLeft: 2 }} onClick={() => this.clearAllInputs()}>Clear</Button>
               <Button variant="contained" size="small" className='buttonActionColor' style={{ marginLeft: 2 }} onClick={() => this.save()}>Create</Button>
             </div>
           </Form>

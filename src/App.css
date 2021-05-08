@@ -188,3 +188,32 @@ label {
   margin-top: -45vh !important;
   margin-left: -2vh !important;
 }
+
+
+.linkMenuOptions {
+  margin: 8px;
+  font-family: 'Gloria Hallelujah', cursive;
+  background-color: whitesmoke!important;
+  color: black !important;
+  outline: none !important;
+}
+
+.linkMenuOptions:hover {
+  margin: 8px;
+  font-family: 'Gloria Hallelujah', cursive;
+  background-color: whitesmoke!important;
+  color: #009688 !important;
+  outline: none !important;
+}
+
+.cardHome:hover{
+  background-color: #05c0b7!important;
+  color: white;
+  width: 40%;
+  margin-left: 0vh;
+  margin-top: 14vh!important;
+  height: 40vh!important;
+  cursor: pointer;
+  box-shadow: 5px 10px #01534a;
+}
+

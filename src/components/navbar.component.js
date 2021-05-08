@@ -1,13 +1,12 @@
+/* eslint-disable react/no-direct-mutation-state */
 import React, { Component } from 'react';
 import { Navbar, Nav, Form, ButtonGroup, ButtonToolbar, Badge } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import CloseIcon from '@material-ui/icons/Close';
 import RemoveSharpIcon from '@material-ui/icons/RemoveSharp';
-import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import Fade from '@material-ui/core/Fade';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import '../App.css';
 const ipc = window.require('electron').ipcRenderer;
@@ -54,20 +53,8 @@ class MyNavBar extends Component {
 
     this.setState({open: this.state.open = true});
   }
-
-  handleClose = () => {
-    this.setState({open: this.state.open = false});
-  };
-
-  goToCreateReminder() {
-    this.setState({open: this.state.open = false});
-  }
-
-  goToShowReminder() {
-    this.setState({open: this.state.open = false});
-  }
-
-  goToAbout() {
+  
+  onClickCapture() {
     this.setState({open: this.state.open = false});
   }
 
@@ -83,23 +70,35 @@ class MyNavBar extends Component {
             aria-haspopup="true"
             onClick={() => this.handleClick()}
           >
-            <MoreVertIcon />
+            <MenuIcon />
           </IconButton>
           <Menu
             id="fade-menu"
             anchorEl={this.state.anchorEl}
             keepMounted
+            onClickCapture={() => this.onClickCapture()}
             open={this.state.open}
             onClose={() => this.handleClose}
             TransitionComponent={Fade}
           >
-            <MenuItem onClick={() => this.goToCreateReminder()}>Create Reminder</MenuItem>
-            <MenuItem onClick={() => this.goToShowReminder()}>Show reminders</MenuItem>
-            <MenuItem onClick={() => this.goToAbout()}>About</MenuItem>
+            <Link to="/create-reminder" className="linkMenuOptions">
+                Create Reminder
+            </Link>
+            <br></br>
+            <Link to="/show-reminders" className="linkMenuOptions">
+                Show reminders
+            </Link>
+            <br></br>
+            <Link to="/about" className="linkMenuOptions">
+                About
+            </Link>
           </Menu>
         </div>
+          <Link to="/">
+            <Badge variant="light">Home</Badge>
+          </Link>
           <Nav className="mr-auto titlebar">
-          <span>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</span>
+          <span>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</span>
           </Nav>
           <Form inline>
           <ButtonToolbar aria-label="Toolbar with button groups">

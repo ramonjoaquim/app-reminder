@@ -13,8 +13,10 @@ if (isDev) {
   global.PATH_DB = {value: app.getPath('userData')+'/reminder.db'};
 }
 
+global.tray = null;
+
+
 let mainWindow;
-let appIcon = null;
 let loadingScreen;
 const createLoadingScreen = () => {
   /// create a browser window
@@ -42,7 +44,14 @@ const createLoadingScreen = () => {
 //ipcMain listeners
 ipcMain.on('put-in-tray', (event) => {
   const iconPath = path.join(__dirname, 'icon.png');
-  appIcon = new Tray(iconPath);
+
+  if (global.tray != null && isLinux()) {
+    mainWindow.hide();
+    showNotification('Running on background...');
+    return;
+  }
+
+  global.tray = new Tray(iconPath);
 
   const contextMenu = Menu.buildFromTemplate([
     { 
@@ -63,33 +72,56 @@ ipcMain.on('put-in-tray', (event) => {
       type:'separator'
     },
     {
+      label: 'Show app',
+      click: () => {
+        if (global.tray) {
+          if (!isLinux()) {
+            global.tray.destroy();
+          }
+        }
+
+        if (!global.tray.isDestroyed()) {
+          if (!isLinux()) {
+            global.tray.destroy();
+          }
+        }
+        mainWindow.show();
+      }
+    },
+    {
       label: 'Quit app',
       click: () => {
-        if (appIcon) {
-          appIcon.destroy();
+        if (global.tray) {
+          if (!isLinux()) {
+            global.tray.destroy();
+          }
         }
 
         app.quit();
       }
     }]);
 
-  appIcon.setToolTip('Reminder app')
-  appIcon.setContextMenu(contextMenu);
+  global.tray.setToolTip('Reminder app')
+  global.tray.setContextMenu(contextMenu);
   mainWindow.hide();
   showNotification('Running on background...');
 
-  appIcon.on('click', () => {
-    appIcon.destroy();
+  global.tray.on('click', () => {
+    if (!isLinux()) {
+      global.tray.destroy();
+    }
     mainWindow.show();
   });
 });
 
 ipcMain.on('remove-tray', () => {
-  appIcon.destroy();
+  if (!isLinux()) {
+    global.tray.destroy();
+  }
 });
 
-ipcMain.handle('window-is-trayed', async (event) => {
-  if (appIcon != null) {
+ipcMain.handle('window-is-trayed', async (_event) => {
+  if (global.tray != null) {
     return true;
   } else {
     return false;
@@ -160,7 +192,11 @@ app.on('window-all-closed', () => {
 });
 
 app.on('window-all-closed', () => {
-  if (appIcon) appIcon.destroy()
+  if (global.tray) {
+    if (!isLinux()) {
+      global.tray.destroy();
+    }
+  }
 });
 
 app.on('activate', () => {
@@ -183,6 +219,10 @@ autoUpdater.on('update-not-available', () => {
 
 
 //functions
+function isLinux() {
+  return process.platform === 'linux' ? true: false;
+}
+
 function showNotification (title, message) {
   const notification = {
     title: title,
