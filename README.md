@@ -18,9 +18,9 @@ You will also see any lint errors in the console.
 
 This will create two folders on root path, dist and build, the dist folder contains the .exe or .deb installer if you running in linux OS.
 
-## Screenshot
+## Screenshots
 
-comming soon
+coming soon
 
 ## Notice
 app on construction
