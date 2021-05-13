@@ -89,8 +89,12 @@ class Crud {
     return this.dao.all(`SELECT * FROM reminder_schedule order by date asc`);
   }
 
+  getSheduleDate() {
+    return this.dao.all(`SELECT r.title, s.date FROM reminder_schedule s join reminder r on r.id = s.id_reminder order by s.date asc`);
+  }
+
   dropSchedulePast() {
-    return this.dao.all(`DELETE FROM reminder_schedule where date < DateTime('Now', 'localtime')`);
+    return this.dao.run(`DELETE FROM reminder_schedule where date < DateTime('Now', 'localtime')`);
   }
 
   dropAllReminder() {
@@ -170,7 +174,8 @@ class Crud {
     });
 
     if (showPrompt) {
-      ipc.send('show-prompt', { title: 'Remiders of day', data: JSON.stringify(await this.getShedule(), null, '\t')});
+      await this.dropSchedulePast();
+      ipc.send('show-prompt', { title: 'Date of remiders on this day', data: JSON.stringify(await this.getSheduleDate(), null, '\t') });
     }
   }
 
