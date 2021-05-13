@@ -86,7 +86,15 @@ class Crud {
   }
 
   getShedule() {
-    return this.dao.all(`SELECT * FROM reminder_schedule`);
+    return this.dao.all(`SELECT * FROM reminder_schedule order by date asc`);
+  }
+
+  getSheduleDate() {
+    return this.dao.all(`SELECT r.title, s.date FROM reminder_schedule s join reminder r on r.id = s.id_reminder order by s.date asc`);
+  }
+
+  dropSchedulePast() {
+    return this.dao.run(`DELETE FROM reminder_schedule where date < DateTime('Now', 'localtime')`);
   }
 
   dropAllReminder() {
@@ -104,7 +112,7 @@ class Crud {
   );
   }
 
-  async _setReminderToDay() {
+  async _setReminderToDay(showPrompt) {
     //await this.dropAll();
         
     let reminderOfDay = await this.dao.all(
@@ -128,6 +136,8 @@ class Crud {
 
     console.log("ta chamando a função assincrona")
     console.log(reminderOfDay);
+
+    
     
     reminderOfDay.forEach(element => {
       startDate = moment(`${moment(element.now).format('yyyy-MM-DD')} ${element.timeStartAt}`);
@@ -162,6 +172,11 @@ class Crud {
     }
 
     });
+
+    if (showPrompt) {
+      await this.dropSchedulePast();
+      ipc.send('show-prompt', { title: 'Date of remiders on this day', data: JSON.stringify(await this.getSheduleDate(), null, '\t') });
+    }
   }
 
   _getHour(time) {
@@ -186,10 +201,10 @@ ipc.on('init-db',  () => {
   });
 });
 
-ipc.on('set-reminders-off-day',  () => {
+ipc.on('set-reminders-off-day',  (_event, args) => {
   var dao = new AppDAO();
   var c = new Crud(dao);
-  c._setReminderToDay();
+  c._setReminderToDay(args);
 });
 
 ipc.on('get-schedule', async () => {
@@ -270,6 +285,8 @@ ipc.on('get-schedule', async () => {
       }
     });
   });
+
+  await c.dropSchedulePast();
 });
 
 export default Crud;
