@@ -23,6 +23,6 @@ This will create two folders on root path, dist and build, the dist folder conta
 coming soon
 
 ## Notice
-app on construction
+app on construction, maybe has several changes
 
 ![](https://media1.tenor.com/images/83592060cb2d2cf51e98a5809aeb60d3/tenor.gif?itemid=16734116)
