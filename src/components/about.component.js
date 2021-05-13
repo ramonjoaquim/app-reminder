@@ -40,6 +40,10 @@ class About extends Component {
     ipc.send('check-updates');
   }
 
+  forceSetReminders() {
+    ipc.send('force-set-reminders');
+  }
+
   render() {
     return (
       <>
@@ -56,6 +60,8 @@ class About extends Component {
               <p>Version: {appVersion}</p> 
               <span>&ensp;&ensp;</span>
               <Button variant='outlined' className='buttonActionColor' size="small" onClick={() => this.checkUpdate()}>Check updates</Button>
+              <span>&ensp;&ensp;</span>
+              <Button variant='outlined' className='buttonActionColor' size="small" onClick={() => this.forceSetReminders()}>Force set reminders</Button>
             </CardContent>
           </Card>
         </Jumbotron>

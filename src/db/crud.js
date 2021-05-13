@@ -86,7 +86,11 @@ class Crud {
   }
 
   getShedule() {
-    return this.dao.all(`SELECT * FROM reminder_schedule`);
+    return this.dao.all(`SELECT * FROM reminder_schedule order by date asc`);
+  }
+
+  dropSchedulePast() {
+    return this.dao.all(`DELETE FROM reminder_schedule where date < DateTime('Now', 'localtime')`);
   }
 
   dropAllReminder() {
@@ -104,7 +108,7 @@ class Crud {
   );
   }
 
-  async _setReminderToDay() {
+  async _setReminderToDay(showPrompt) {
     //await this.dropAll();
         
     let reminderOfDay = await this.dao.all(
@@ -128,6 +132,8 @@ class Crud {
 
     console.log("ta chamando a função assincrona")
     console.log(reminderOfDay);
+
+    
     
     reminderOfDay.forEach(element => {
       startDate = moment(`${moment(element.now).format('yyyy-MM-DD')} ${element.timeStartAt}`);
@@ -162,6 +168,10 @@ class Crud {
     }
 
     });
+
+    if (showPrompt) {
+      ipc.send('show-prompt', { title: 'Remiders of day', data: JSON.stringify(await this.getShedule(), null, '\t')});
+    }
   }
 
   _getHour(time) {
@@ -186,10 +196,10 @@ ipc.on('init-db',  () => {
   });
 });
 
-ipc.on('set-reminders-off-day',  () => {
+ipc.on('set-reminders-off-day',  (_event, args) => {
   var dao = new AppDAO();
   var c = new Crud(dao);
-  c._setReminderToDay();
+  c._setReminderToDay(args);
 });
 
 ipc.on('get-schedule', async () => {
@@ -270,6 +280,8 @@ ipc.on('get-schedule', async () => {
       }
     });
   });
+
+  await c.dropSchedulePast();
 });
 
 export default Crud;

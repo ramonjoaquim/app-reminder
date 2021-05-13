@@ -174,6 +174,29 @@ ipcMain.on('check-updates', () => {
   mainWindow.webContents.send('checking_updates');
 })
 
+ipcMain.on('force-set-reminders', () => {
+  mainWindow.webContents.send('force_reminders');
+  setTimeout(() => {
+  mainWindow.webContents.send("set-reminders-off-day", true);
+  }, 3000);
+
+})
+
+ipcMain.on('show-prompt', (event, args) => {
+  const options = {
+    type: 'error',
+    title: args.title,
+    message: args.data  ? args.data.toString(): 'No content',
+    icon: path.join(__dirname, './icon.png'),
+    noLink:false,
+    buttons: ['ok']
+  }
+
+  dialog.showMessageBoxSync(mainWindow, options, (index) => {
+    event.sender.send('dialog-error', index);
+  })
+})
+
 //App listeners
 //app.on('ready', createWindow);
 
@@ -292,10 +315,7 @@ var setRemindersToDay = new CronJob('0 */1 * * *',  function() {
 
 var getShedule = new CronJob('* * * * *',  function() {
   //Cron job every minute.
- if (mainWindow) {
   mainWindow.webContents.send("get-schedule", "");
- }
-
 }, null, true, 'America/Sao_Paulo');
 
 var getUpdates = new CronJob('0 0 * * *',  function() {
