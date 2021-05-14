@@ -48,7 +48,7 @@ class About extends Component {
     return (
       <>
         <Jumbotron>
-          <Card className={this.classes.root} style={{backgroundColor: 'rgb(7 74 68 / 55%)', color:'white', width:'103%', marginLeft:'-2vh', marginTop:'14vh'}}>
+          <Card className={this.classes.root} style={{backgroundColor: 'rgb(7 74 68 / 55%)', color:'white', width:'103%', marginLeft:'-2vh', marginTop:'-4vh'}}>
             <CardContent style={{ textAlign: 'center', color:'white'}}>
               <div className='row' style={{marginLeft:'30vh'}} onClick={() => this.goToPage('https://github.com/ramonjoaquim/app-reminder')}>
                 <img width="15%" style={{marginRight:30}} height="auto" className="img-responsive" src={logo} alt='Logo Reminder App'></img>
@@ -58,9 +58,8 @@ class About extends Component {
               <Avatar style={{marginLeft:'47%'}} alt="Ramon Joaquim" onClick={() => this.goToPage('https://github.com/ramonjoaquim')} className={this.classes.large} src="https://s.gravatar.com/avatar/4686eba0c4375b4316ad588324bcff89?s=80" />
               <br/> <br/>
               <p>Version: {appVersion}</p> 
-              <span>&ensp;&ensp;</span>
-              <Button variant='outlined' className='buttonActionColor' size="small" onClick={() => this.checkUpdate()}>Check updates</Button>
-              <span>&ensp;&ensp;</span>
+              <span>&ensp;</span>
+              {/* <Button variant='outlined' className='buttonActionColor' size="small" onClick={() => this.checkUpdate()}>Check updates</Button> */}
               <Button variant='outlined' className='buttonActionColor' size="small" onClick={() => this.forceSetReminders()}>Force set reminders</Button>
             </CardContent>
           </Card>
