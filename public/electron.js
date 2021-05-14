@@ -195,7 +195,12 @@ ipcMain.on('show-prompt', (event, args) => {
   dialog.showMessageBoxSync(mainWindow, options, (index) => {
     event.sender.send('dialog-error', index);
   })
-})
+});
+
+ipcMain.handle('get-next-reminder', async (_event) => {
+  mainWindow.webContents.send("next-reminder");
+});
+
 
 //App listeners
 //app.on('ready', createWindow);

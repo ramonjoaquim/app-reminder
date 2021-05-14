@@ -5,9 +5,16 @@ import CardContent from '@material-ui/core/CardContent';
 import CreateIcon from '../assets/create-icon.png';
 import ListIcon from '../assets/list-icon.png';
 
-
 import '../App.css';
+const ipc = window.require('electron').ipcRenderer;
 class Home extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      nextReminder: ''
+    };
+  }
 
   goToCreateReminder() {
     this.props.history.push('/create-reminder');
@@ -16,12 +23,21 @@ class Home extends Component {
   gotToShowReminder() {
     this.props.history.push('/show-reminders');
   }
-  
+
+  getNextReminder() {
+    ipc.invoke('get-next-reminder').then(data => {
+      // eslint-disable-next-line react/no-direct-mutation-state
+      this.setState({ nextReminder: this.state.nextReminder = data });
+    })
+  }
+
   render() {
     return (
       <>
         <Jumbotron>
           <h1>What you gonna do?</h1>
+          <br></br>
+          {/* <h6 onClickCapture={() => this.getNextReminder()}>Next reminder: {this.state.nextReminder}</h6> */}
           <div className='row'>
           <Card style={{backgroundColor: 'rgb(7 74 68 / 55%)', color:'white', width:'40%', marginLeft:'10vh', marginRight:'30px', marginTop:'20vh', height:'27vh'}} className="cardHome" onClickCapture={() => this.goToCreateReminder()}>
             <CardContent style={{ textAlign: 'center', color:'white'}}>

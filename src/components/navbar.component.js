@@ -89,6 +89,10 @@ class MyNavBar extends Component {
                 Show reminders
             </Link>
             <br></br>
+            <Link to="/settings" className="linkMenuOptions">
+                Settings
+            </Link>
+            <br></br>
             <Link to="/about" className="linkMenuOptions">
                 About
             </Link>

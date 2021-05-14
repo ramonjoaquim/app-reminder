@@ -89,6 +89,10 @@ class Crud {
     return this.dao.all(`SELECT * FROM reminder_schedule order by date asc`);
   }
 
+  getNextReminder() {
+    return this.dao.all(`SELECT r.title, s.date FROM reminder_schedule s join reminder r on r.id = s.id_reminder order by s.date asc limit 1`);
+  }
+
   getSheduleDate() {
     return this.dao.all(`SELECT r.title, s.date FROM reminder_schedule s join reminder r on r.id = s.id_reminder order by s.date asc`);
   }
@@ -113,7 +117,7 @@ class Crud {
   }
 
   async _setReminderToDay(showPrompt) {
-    //await this.dropAll();
+    await this.dropSchedulePast();
         
     let reminderOfDay = await this.dao.all(
       `SELECT DateTime('Now', 'localtime') as now,
@@ -174,7 +178,6 @@ class Crud {
     });
 
     if (showPrompt) {
-      await this.dropSchedulePast();
       ipc.send('show-prompt', { title: 'Date of remiders on this day', data: JSON.stringify(await this.getSheduleDate(), null, '\t') });
     }
   }
@@ -190,8 +193,8 @@ class Crud {
 }
 
 ipc.on('init-db',  () => {
-  var dao = new AppDAO();
-  var c = new Crud(dao);
+  let dao = new AppDAO();
+  let c = new Crud(dao);
   c.createTable().then(() => {
     console.log('db is created...')
   })
@@ -202,14 +205,21 @@ ipc.on('init-db',  () => {
 });
 
 ipc.on('set-reminders-off-day',  (_event, args) => {
-  var dao = new AppDAO();
-  var c = new Crud(dao);
+  let dao = new AppDAO();
+  let c = new Crud(dao);
   c._setReminderToDay(args);
 });
 
+ipc.on('next-reminder',  async (_event) => {
+  let dao = new AppDAO();
+  let c = new Crud(dao);
+  const { port1 } = new MessageChannel();
+  ipc.postMessage('reminder-of-day', { data: await c.getNextReminder() }, [port1]);
+});
+
 ipc.on('get-schedule', async () => {
-  var dao = new AppDAO();
-  var c = new Crud(dao);
+  let dao = new AppDAO();
+  let c = new Crud(dao);
   var now = moment(new Date()).format('YYYY-MM-DD HH:mm');
   var day = moment(new Date()).day();
   

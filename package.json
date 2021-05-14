@@ -1,6 +1,6 @@
 {
   "name": "reminder-app",
-  "version": "0.2.0-beta.10",
+  "version": "0.2.0-beta.11",
   "license": "MIT",
   "description": "Reminder app",
   "author": "Ramon J. Limas <limasramon3@gmail.com>",
@@ -45,6 +45,9 @@
   "build": {
     "appId": "com.reminder-app",
     "productName": "Reminder App",
+    "directories": {
+      "buildResources": "build"
+    },
     "dmg": {
       "contents": [
         {
@@ -63,7 +66,7 @@
       "target": "deb",
       "category": "Utility",
       "maintainer": "Ramon J. Limas",
-      "icon": "src/assets/icon-linux.png"
+      "icon": "src/assets/icon.icns"
     },
     "win": {
       "target": "nsis",
