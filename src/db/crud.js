@@ -90,7 +90,7 @@ class Crud {
   }
 
   getNextReminder() {
-    return this.dao.all(`SELECT r.title, s.date FROM reminder_schedule s join reminder r on r.id = s.id_reminder order by s.date asc limit 1`);
+    return this.dao.all(`SELECT r.title, r.message_notification, strftime('%d/%m/%Y %H:%M',s.date) as date FROM reminder_schedule s join reminder r on r.id = s.id_reminder order by s.date asc limit 1`);
   }
 
   getSheduleDate() {
@@ -210,11 +210,12 @@ ipc.on('set-reminders-off-day',  (_event, args) => {
   c._setReminderToDay(args);
 });
 
-ipc.on('next-reminder',  async (_event) => {
+ipc.on('next-reminder', async (_event) => {
   let dao = new AppDAO();
   let c = new Crud(dao);
-  const { port1 } = new MessageChannel();
-  ipc.postMessage('reminder-of-day', { data: await c.getNextReminder() }, [port1]);
+  let data = await c.getNextReminder();
+  let message = `${data[0].title} -> ${data[0].message_notification} às ${data[0].date}`;
+  ipc.send('show-popUp', { title:'Next reminder', data: message });
 });
 
 ipc.on('get-schedule', async () => {

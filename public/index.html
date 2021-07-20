@@ -78,7 +78,16 @@
       });
 
       ipcRenderer.on('force_reminders', () => {
-        document.getElementById('message').innerHTML  = 'Forcing reminders...';
+        document.getElementById('message').innerHTML  = 'Getting log reminders...';
+        document.getElementById('notification').classList.remove('hidden');
+        setTimeout(() => {
+          document.getElementById('notification').classList.add('hidden');
+        }, 5000);
+      });
+
+      ipcRenderer.on('pop_up', (_event, args) => {
+        document.getElementById('title').innerHTML  = args.title;
+        document.getElementById('message').innerHTML  = args.data;
         document.getElementById('notification').classList.remove('hidden');
         setTimeout(() => {
           document.getElementById('notification').classList.add('hidden');
@@ -100,6 +109,7 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <div id="notification" class="hidden">
+      <h6 id="title"></h6>
       <p id="message"></p>
       <div class="row">
         <button id="close-button" onClick="closeNotification()" style="margin-left: 4vh;" class="btn btn-outline-info btn-sm">

@@ -17,6 +17,7 @@ global.tray = null;
 
 
 let mainWindow;
+let logWindow;
 let loadingScreen;
 const createLoadingScreen = () => {
   /// create a browser window
@@ -183,23 +184,34 @@ ipcMain.on('force-set-reminders', () => {
 })
 
 ipcMain.on('show-prompt', (event, args) => {
-  const options = {
-    type: 'error',
-    title: args.title,
-    message: args.data  ? args.data.toString(): 'No content',
-    icon: path.join(__dirname, './icon.png'),
-    noLink:false,
-    buttons: ['ok']
-  }
+  console.log(args);
+  if (!logWindow) {
+    windowLog(args);
 
-  dialog.showMessageBoxSync(mainWindow, options, (index) => {
-    event.sender.send('dialog-error', index);
-  })
+    logWindow.once('ready-to-show', () => {
+      logWindow.show()
+    })
+  }
 });
 
-ipcMain.handle('get-next-reminder', async (_event) => {
+ipcMain.on('show-popUp', (_event, args) => {
+  let data = {
+    title: args.title,
+    data: args.data
+  };
+
+  mainWindow.webContents.send('pop_up', data);
+});
+
+ipcMain.on('get-next-reminder', (_event) => {
   mainWindow.webContents.send("next-reminder");
 });
+
+ipcMain.on('close-log-window',() => {
+  console.log('close window')
+  logWindow.close();
+  logWindow = null;
+})
 
 
 //App listeners
@@ -312,6 +324,48 @@ function createWindow() {
 
 }
 
+function windowLog(args) {
+  const iconPath = path.join(__dirname, 'icon.png');
+  logWindow = new BrowserWindow({
+    title: args.title,
+    titleBarStyle: 'hiddenInset',
+    width: 800,
+    height: 600,
+    minHeight: 600,
+    minWidth: 800,
+    frame: false,
+    icon: iconPath,
+    resizable: isDev ? true : false,
+    fullscreen: false,
+    parent: 'top', 
+    modal: true, 
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      webSecurity: true,
+      enableRemoteModule: true
+    },
+  });
+
+  if (isDev) {
+    logWindow.webContents.openDevTools();
+  }
+
+  logWindow.on('closed', () => {
+    logWindow = null;
+  });
+
+  logWindow.setResizable(false);
+
+  global.varsForWindow = {
+    dataLog: args.data
+  };
+
+  logWindow.loadURL('file://' + __dirname + '/common/window/log.html');
+
+}
+
 //crons
 var setRemindersToDay = new CronJob('0 */1 * * *',  function() {
    //Cron job every 1 hours.
@@ -320,7 +374,10 @@ var setRemindersToDay = new CronJob('0 */1 * * *',  function() {
 
 var getShedule = new CronJob('* * * * *',  function() {
   //Cron job every minute.
-  mainWindow.webContents.send("get-schedule", "");
+  if (mainWindow) {
+    mainWindow.webContents.send("get-schedule", "");
+  }
+  
 }, null, true, 'America/Sao_Paulo');
 
 var getUpdates = new CronJob('0 0 * * *',  function() {

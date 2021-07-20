@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Jumbotron } from 'react-bootstrap';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
 import CreateIcon from '../assets/create-icon.png';
 import ListIcon from '../assets/list-icon.png';
 
@@ -25,10 +26,8 @@ class Home extends Component {
   }
 
   getNextReminder() {
-    ipc.invoke('get-next-reminder').then(data => {
-      // eslint-disable-next-line react/no-direct-mutation-state
-      this.setState({ nextReminder: this.state.nextReminder = data });
-    })
+    console.log('getNextreminderClick')
+    ipc.send('get-next-reminder');
   }
 
   render() {
@@ -38,6 +37,7 @@ class Home extends Component {
           <h1>What you gonna do?</h1>
           <br></br>
           {/* <h6 onClickCapture={() => this.getNextReminder()}>Next reminder: {this.state.nextReminder}</h6> */}
+          <Button variant='outlined' className='buttonActionColor' size="small" onClick={() => this.getNextReminder()}>See next reminder</Button>
           <div className='row'>
           <Card style={{backgroundColor: 'rgb(7 74 68 / 55%)', color:'white', width:'40%', marginLeft:'10vh', marginRight:'30px', marginTop:'20vh', height:'27vh'}} className="cardHome" onClickCapture={() => this.goToCreateReminder()}>
             <CardContent style={{ textAlign: 'center', color:'white'}}>
