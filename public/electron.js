@@ -184,7 +184,6 @@ ipcMain.on('force-set-reminders', () => {
 })
 
 ipcMain.on('show-prompt', (event, args) => {
-  console.log(args);
   if (!logWindow) {
     windowLog(args);
 
@@ -208,7 +207,6 @@ ipcMain.on('get-next-reminder', (_event) => {
 });
 
 ipcMain.on('close-log-window',() => {
-  console.log('close window')
   logWindow.close();
   logWindow = null;
 })

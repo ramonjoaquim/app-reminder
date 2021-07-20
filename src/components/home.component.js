@@ -26,7 +26,6 @@ class Home extends Component {
   }
 
   getNextReminder() {
-    console.log('getNextreminderClick')
     ipc.send('get-next-reminder');
   }
 
@@ -36,7 +35,6 @@ class Home extends Component {
         <Jumbotron>
           <h1>What you gonna do?</h1>
           <br></br>
-          {/* <h6 onClickCapture={() => this.getNextReminder()}>Next reminder: {this.state.nextReminder}</h6> */}
           <Button variant='outlined' className='buttonActionColor' size="small" onClick={() => this.getNextReminder()}>See next reminder</Button>
           <div className='row'>
           <Card style={{backgroundColor: 'rgb(7 74 68 / 55%)', color:'white', width:'40%', marginLeft:'10vh', marginRight:'30px', marginTop:'20vh', height:'27vh'}} className="cardHome" onClickCapture={() => this.goToCreateReminder()}>
@@ -55,10 +53,6 @@ class Home extends Component {
             </CardContent>
           </Card>
           </div>
-          {/* <div className='row homeLogo' style={{marginLeft:'45vh', marginTop:'23vh'}} onClick={() => this.goToPage('https://github.com/ramonjoaquim/app-reminder')}>
-            <img width="9%" style={{marginRight:10}} height="50vh" className="img-responsive" src={logo} alt='Logo Reminder App'></img>
-            <h6 style={{marginTop:'3.5%'}}>Reminder App</h6>
-          </div> */}
         </Jumbotron>
       </>
     );

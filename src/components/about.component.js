@@ -59,7 +59,6 @@ class About extends Component {
               <br/> <br/>
               <p>Version: {appVersion}</p> 
               <span>&ensp;</span>
-              {/* <Button variant='outlined' className='buttonActionColor' size="small" onClick={() => this.checkUpdate()}>Check updates</Button> */}
               <Button variant='outlined' className='buttonActionColor' size="small" onClick={() => this.forceSetReminders()}>Get Log reminder</Button>
             </CardContent>
           </Card>

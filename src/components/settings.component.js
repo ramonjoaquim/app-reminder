@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
 import { Jumbotron } from 'react-bootstrap';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CreateIcon from '../assets/create-icon.png';
-import ListIcon from '../assets/list-icon.png';
-
 
 import '../App.css';
 class Settings extends Component {

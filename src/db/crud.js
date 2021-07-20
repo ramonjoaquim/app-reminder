@@ -8,7 +8,7 @@ class Crud {
   }
 
   createTable() {
-      const sql = `
+      const reminderTable = `
       CREATE TABLE IF NOT EXISTS reminder (
         id                   INTEGER PRIMARY KEY AUTOINCREMENT,
         title                VARCHAR(250) NOT NULL,
@@ -29,7 +29,7 @@ class Crud {
       );
       `;
 
-      const sql2 = `
+      const reminderScheduleTable = `
       CREATE TABLE IF NOT EXISTS reminder_schedule (
         id          INTEGER PRIMARY KEY AUTOINCREMENT,
         id_reminder integer NOT NULL,
@@ -37,8 +37,8 @@ class Crud {
         UNIQUE(id_reminder, date)
       );
       `;
-      this.dao.run(sql2);
-      return this.dao.run(sql);
+      this.dao.run(reminderScheduleTable);
+      return this.dao.run(reminderTable);
   }
 
   insert(reminder) {
@@ -47,7 +47,6 @@ class Crud {
     delete reminder.open;
     delete reminder.messageReminder;
     for (var i = 0; i < Object.keys(reminder).length -1 ; i ++) paramString += ",?";  
-    //console.log('insert into reminder VALUES ('+paramString+')', Object.values(reminder));
     
     let retorno = this.dao.run('insert into reminder VALUES (null,'+paramString+')', Object.values(reminder));
     return retorno;
@@ -56,7 +55,7 @@ class Crud {
   _insertReminderSchedule(reminder) {
     let paramString = "?";
     for (var i = 0; i < Object.keys(reminder).length -1 ; i ++) paramString += ",?";  
-    //console.log('insert into reminder VALUES ('+paramString+')', Object.values(reminder));
+    
     return this.dao.run('insert into reminder_schedule VALUES (null,'+paramString+')', Object.values(reminder));
   }
 
@@ -135,14 +134,8 @@ class Crud {
 
     var startDate;
     var endDate;
+    var myFinalDate;
 
-    var minhaDataFinal;
-
-    console.log("ta chamando a função assincrona")
-    console.log(reminderOfDay);
-
-    
-    
     reminderOfDay.forEach(element => {
       startDate = moment(`${moment(element.now).format('yyyy-MM-DD')} ${element.timeStartAt}`);
       endDate = moment(`${moment(element.now).format('yyyy-MM-DD')} ${element.timeEndAt}`);
@@ -156,20 +149,20 @@ class Crud {
       while (true) {
         
       if (this._getHour(element.interval) !== '00') {
-        minhaDataFinal = moment(startDate, 'HH:mm').add(this._getHour(element.interval), 'hour');
+        myFinalDate = moment(startDate, 'HH:mm').add(this._getHour(element.interval), 'hour');
       }
 
       if (this._getMinutes(element.interval) !== '00') {
-        minhaDataFinal = moment(startDate, 'HH:mm').add(this._getMinutes(element.interval), 'minutes');
+        myFinalDate = moment(startDate, 'HH:mm').add(this._getMinutes(element.interval), 'minutes');
       }
 
-      if (minhaDataFinal <= endDate) {
+      if (myFinalDate <= endDate) {
         objInsert = {
           id_reminder: element.id,
-          date       :moment(minhaDataFinal).format('yyyy-MM-DD HH:mm')
+          date       :moment(myFinalDate).format('yyyy-MM-DD HH:mm')
         };
         this._insertReminderSchedule(objInsert);
-        startDate = minhaDataFinal;
+        startDate = myFinalDate;
       } else {
         break;
       }
@@ -196,11 +189,9 @@ ipc.on('init-db',  () => {
   let dao = new AppDAO();
   let c = new Crud(dao);
   c.createTable().then(() => {
-    console.log('db is created...')
   })
-  .catch((err) => {
-    console.log('Error: ')
-    console.log(JSON.stringify(err))
+  .catch((_err) => {
+    ipc.send('dialog-error', _err);
   });
 });
 
