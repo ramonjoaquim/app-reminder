@@ -1,3 +1,5 @@
+  /* eslint no-console: ["error", { allow: ["info", "error"] }] */
+
 import React, { Component } from 'react';
 import { Jumbotron } from 'react-bootstrap';
 import { makeStyles } from '@material-ui/core/styles';
@@ -5,9 +7,11 @@ import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import CardContent from '@material-ui/core/CardContent';
-import logo from '../assets/icon.png';
+import logo from '../../assets/icon.png';
+
 const appVersion = window.require("electron").remote.app.getVersion();
 const ipc = window.require('electron').ipcRenderer;
+
 class About extends Component {
 
   classes = makeStyles((theme) => ({

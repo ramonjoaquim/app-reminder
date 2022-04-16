@@ -1,13 +1,16 @@
+  /* eslint no-console: ["error", { allow: ["info", "error"] }] */
+
 import React, { Component } from 'react';
 import { Jumbotron } from 'react-bootstrap';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import CreateIcon from '../assets/create-icon.png';
-import ListIcon from '../assets/list-icon.png';
+import CreateIcon from '../../assets/create-icon.png';
+import ListIcon from '../../assets/list-icon.png';
+import '../../app.css';
 
-import '../App.css';
 const ipc = window.require('electron').ipcRenderer;
+
 class Home extends Component {
 
   constructor(props) {
@@ -26,7 +29,6 @@ class Home extends Component {
   }
 
   getNextReminder() {
-    console.log('getNextreminderClick')
     ipc.send('get-next-reminder');
   }
 

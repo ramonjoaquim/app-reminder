@@ -7,14 +7,9 @@ const isDev = require('electron-is-dev');
 const operationanSystem = require('os');
 const CronJob = require('cron').CronJob;
 
-if (isDev) {
-  global.PATH_DB = {value: 'src/db/reminder.db'};
-} else {
-  global.PATH_DB = {value: app.getPath('userData')+'/reminder.db'};
-}
+isDev ? global.PATH_DB = {value: 'src/repository/reminder.db'} : global.PATH_DB = {value: app.getPath('userData')+'/reminder.db'};
 
 global.tray = null;
-
 
 let mainWindow;
 let logWindow;
@@ -25,7 +20,7 @@ const createLoadingScreen = () => {
     Object.assign({
       /// define width and height for the window
       width: 200,
-      height: 400,
+      height: 250,
       /// remove the window frame, so it will become a frameless window
       frame: false,
       /// and set the transparency, to remove any window background color
@@ -121,11 +116,7 @@ ipcMain.on('remove-tray', () => {
 });
 
 ipcMain.handle('window-is-trayed', async (_event) => {
-  if (global.tray != null) {
-    return true;
-  } else {
-    return false;
-  } 
+    return global.tray != null;
 });
 
 ipcMain.on('maximise', () => {
@@ -183,15 +174,12 @@ ipcMain.on('force-set-reminders', () => {
 
 })
 
-ipcMain.on('show-prompt', (event, args) => {
-  console.log(args);
-  if (!logWindow) {
-    windowLog(args);
-
-    logWindow.once('ready-to-show', () => {
-      logWindow.show()
-    })
-  }
+ipcMain.on('show-prompt', (_event, args) => {
+  if (logWindow) return;
+  windowLog(args);
+  logWindow.once('ready-to-show', () => {
+    logWindow.show();
+  })
 });
 
 ipcMain.on('show-popUp', (_event, args) => {
@@ -199,7 +187,6 @@ ipcMain.on('show-popUp', (_event, args) => {
     title: args.title,
     data: args.data
   };
-
   mainWindow.webContents.send('pop_up', data);
 });
 
@@ -208,20 +195,16 @@ ipcMain.on('get-next-reminder', (_event) => {
 });
 
 ipcMain.on('close-log-window',() => {
-  console.log('close window')
   logWindow.close();
   logWindow = null;
 })
 
-
 //App listeners
-//app.on('ready', createWindow);
-
 app.on('ready', () => {
   createLoadingScreen();
   setTimeout(() => {
     createWindow();
-  }, 7000);
+  }, 3000);
 });
 
 app.on('window-all-closed', () => {
@@ -231,11 +214,9 @@ app.on('window-all-closed', () => {
 });
 
 app.on('window-all-closed', () => {
-  if (global.tray) {
-    if (!isLinux()) {
-      global.tray.destroy();
-    }
-  }
+  if (!global.tray) return;
+  if (isLinux()) return;
+  global.tray.destroy();
 });
 
 app.on('activate', () => {
@@ -259,7 +240,7 @@ autoUpdater.on('update-not-available', () => {
 
 //functions
 function isLinux() {
-  return process.platform === 'linux' ? true: false;
+  return !!(process.platform === 'linux');
 }
 
 function showNotification (title, message) {
@@ -318,7 +299,7 @@ function createWindow() {
     setTimeout(() => {
       mainWindow.webContents.send("init-db");
       mainWindow.webContents.send("set-reminders-off-day", "");
-    }, 5000);
+    }, 3000);
     
   });
 
@@ -361,18 +342,16 @@ function windowLog(args) {
   global.varsForWindow = {
     dataLog: args.data
   };
-
   logWindow.loadURL('file://' + __dirname + '/common/window/log.html');
-
 }
 
 //crons
-var setRemindersToDay = new CronJob('0 */1 * * *',  function() {
+var setRemindersToDay = new CronJob('0 */1 * * *',  () => {
    //Cron job every 1 hours.
   mainWindow.webContents.send("set-reminders-off-day", "");
 }, null, true, 'America/Sao_Paulo');
 
-var getShedule = new CronJob('* * * * *',  function() {
+var getShedule = new CronJob('* * * * *',  () => {
   //Cron job every minute.
   if (mainWindow) {
     mainWindow.webContents.send("get-schedule", "");
@@ -380,7 +359,7 @@ var getShedule = new CronJob('* * * * *',  function() {
   
 }, null, true, 'America/Sao_Paulo');
 
-var getUpdates = new CronJob('0 0 * * *',  function() {
+var getUpdates = new CronJob('0 0 * * *',  () => {
   //Cron job every 1 hours.
  autoUpdater.checkForUpdates();
 }, null, true, 'America/Sao_Paulo');

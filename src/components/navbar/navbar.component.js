@@ -1,4 +1,6 @@
 /* eslint-disable react/no-direct-mutation-state */
+/* eslint no-console: ["error", { allow: ["info", "error"] }] */
+
 import React, { Component } from 'react';
 import { Navbar, Nav, Form, ButtonGroup, ButtonToolbar, Badge } from 'react-bootstrap';
 import { Link } from "react-router-dom";
@@ -8,9 +10,9 @@ import Menu from '@material-ui/core/Menu';
 import Fade from '@material-ui/core/Fade';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
-import '../App.css';
-const ipc = window.require('electron').ipcRenderer;
+import '../../app.css';
 
+const ipc = window.require('electron').ipcRenderer;
 
 class MyNavBar extends Component {
 

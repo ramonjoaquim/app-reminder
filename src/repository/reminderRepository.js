@@ -1,9 +1,13 @@
+
+  /* eslint no-console: ["error", { allow: ["info", "error"] }] */
 const sqlite3 = window.require('sqlite3');
 const Promise = window.require('bluebird');
 const remote = window.require('electron').remote;   
 const ipc = window.require('electron').ipcRenderer;  
-class AppDAO {
-    constructor() {
+
+class ReminderRepository {
+
+  constructor() {
         this.db = new sqlite3.Database(remote.getGlobal('PATH_DB').value, (err) => {
             if (err) {
               ipc.send('dialog-error', 'Could not connect to database.');
@@ -15,11 +19,10 @@ class AppDAO {
         return new Promise((resolve, reject) => {
             this.db.run(sql, params, function (err) {
                 if (err) {
-                    // console.log('Error running sql ' + sql);
-                    // console.log(err);
-                    reject(err);
+                  console.error('Error running sql ' + sql);
+                  reject(err);
                 } else {
-                    resolve({ id: this.lastID });
+                  resolve({ id: this.lastID });
                 }
             })
         })
@@ -29,11 +32,10 @@ class AppDAO {
         return new Promise((resolve, reject) => {
             this.db.get(sql, params, (err, result) => {
                 if (err) {
-                    // console.log('Error running sql: ' + sql);
-                    // console.log(err);
-                    reject(err);
+                  console.error('Error running sql ' + sql);
+                  reject(err);
                 } else {
-                    resolve(result);
+                  resolve(result);
                 }
             })
         })
@@ -43,15 +45,14 @@ class AppDAO {
         return new Promise((resolve, reject) => {
             this.db.all(sql, params, (err, rows) => {
                 if (err) {
-                    // console.log('Error running sql: ' + sql);
-                    // console.log(err);
-                    reject(err);
+                  console.error('Error running sql ' + sql);
+                  reject(err);
                 } else {
-                    resolve(rows);
+                  resolve(rows);
                 }
             })
         })
     }
 }
  
-export default AppDAO;
+export default ReminderRepository;

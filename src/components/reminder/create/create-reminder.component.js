@@ -1,3 +1,4 @@
+  /* eslint no-console: ["error", { allow: ["info", "error"] }] */
 import React, { Component } from 'react';
 import { InputGroup, Jumbotron, Form, Col, FormControl } from 'react-bootstrap';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -11,13 +12,11 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Alert from '@material-ui/lab/Alert';
 import { Link } from "react-router-dom";
-
-import '../App.css';
+import '../../../app.css';
+import ReminderService from '../../../service/reminderService';
 
 const ipc = window.require('electron').ipcRenderer;
 
-const AppDAO = require('../db/dao').default;
-const Crud = require('../db/crud').default;
 class CreateReminder extends Component {
 
   initialState = {
@@ -46,8 +45,7 @@ class CreateReminder extends Component {
   }
 
   setDatabase() {
-    this.dao = new AppDAO();
-    this.db = new Crud(this.dao);
+    this.service = new ReminderService();
   }
 
   getCheckboxValue(event) {
@@ -94,9 +92,9 @@ class CreateReminder extends Component {
 
   save() {
     if(this.validateInputs()) {
-      this.db.insert(this.state);
+      this.service.insert(this.state);
       this.notify();
-      this.db._setReminderToDay();
+      this.service._setReminderToDay();
       this.resetFields();
     }
   }

@@ -1,4 +1,5 @@
 /* eslint-disable react/no-direct-mutation-state */
+/* eslint no-console: ["error", { allow: ["info", "error"] }] */
 import React, { Component } from 'react';
 import { Jumbotron } from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
@@ -14,10 +15,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import moment from 'moment';
-import '../App.css';
-
-const AppDAO = require('../db/dao').default;
-const Crud = require('../db/crud').default;
+import '../../../app.css';
+import ReminderService from '../../../service/reminderService';
 
 class ShowReminder extends Component {
 
@@ -37,12 +36,11 @@ class ShowReminder extends Component {
   }
 
   setDatabase() {
-    this.dao = new AppDAO();
-    this.db = new Crud(this.dao);
+    this.service = new ReminderService();
   }
 
   loadData() {
-    var getAllData = this.db.getAll();
+    var getAllData = this.service.getAll();
 
     Promise.all(getAllData).then((data) => {
       this.setState({ rows: data });
@@ -50,15 +48,15 @@ class ShowReminder extends Component {
   }
 
   deleteItem(id) {
-    this.db.delete(id);
-    this.db.deleteSheduleByReminderId(id);
+    this.service.delete(id);
+    this.service.deleteSheduleByReminderId(id);
     this.loadData();
     this.notify();
   }
 
   eraseAll() {
-    this.db.dropAllReminder();
-    this.db.dropAllSheduler();
+    this.service.dropAllReminder();
+    this.service.dropAllSheduler();
     this.loadData();
     this.notify();
   }

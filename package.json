@@ -1,10 +1,14 @@
 {
   "name": "reminder-app",
-  "version": "0.2.0-beta.12",
+  "version": "0.2.0-beta.13",
   "license": "MIT",
   "description": "Reminder app",
   "author": "Ramon J. Limas <limasramon3@gmail.com>",
   "private": false,
+  "engines" : { 
+    "npm" : ">=7.21.1",
+    "node" : ">=10.19.0"
+  },
   "main": "public/electron.js",
   "dependencies": {
     "@date-io/date-fns": "^2.10.8",
@@ -92,7 +96,7 @@
       "react-app/jest"
     ],
     "rules": {
-      "no-debugger": "error",
+      "no-unused-vars": "error",
       "no-console": "warn"
     }
   },
