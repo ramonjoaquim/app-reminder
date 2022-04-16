@@ -1,13 +1,13 @@
 {
   "name": "reminder-app",
-  "version": "0.2.0-beta.13",
+  "version": "0.2.0-beta.14",
   "license": "MIT",
   "description": "Reminder app",
   "author": "Ramon J. Limas <limasramon3@gmail.com>",
   "private": false,
-  "engines" : { 
-    "npm" : ">=7.21.1",
-    "node" : ">=10.19.0"
+  "engines": {
+    "npm": ">=7.21.1",
+    "node": ">=10.19.0"
   },
   "main": "public/electron.js",
   "dependencies": {
@@ -83,11 +83,13 @@
       "oneClick": false,
       "perMachine": true
     },
-    "publish": [{
-      "provider": "github",
-      "owner": "ramonjoaquim",
-      "repo": "app-reminder"
-  }]
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "ramonjoaquim",
+        "repo": "app-reminder"
+      }
+    ]
   },
   "homepage": "./",
   "eslintConfig": {
@@ -120,7 +122,7 @@
     "wait-on": "^5.3.0"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/ramonjoaquim/app-reminder.git"
+    "type": "git",
+    "url": "https://github.com/ramonjoaquim/app-reminder.git"
   }
 }

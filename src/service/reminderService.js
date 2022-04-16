@@ -24,6 +24,21 @@ class ReminderService {
     return retorno;
   }
 
+  insertSettings(reminder) {
+    let paramString = "?";
+
+    for (var i = 0; i < Object.keys(reminder).length -1 ; i ++) paramString += ",?";  
+    let retorno = this.repository.run('insert into reminder_setting VALUES (null,'+paramString+')', Object.values(reminder));
+    return retorno;
+  }
+
+  updateSettings(id, value) {
+    return this.repository.run(
+      `UPDATE reminder_setting set disable_notification = ${value} WHERE id = ?`,
+      [id]
+  );
+  }
+
   _insertReminderSchedule(reminder) {
     let paramString = "?";
     for (var i = 0; i < Object.keys(reminder).length -1 ; i ++) paramString += ",?";  
@@ -31,10 +46,10 @@ class ReminderService {
   }
 
   delete(id) {
-      return this.repository.run(
-          `DELETE FROM reminder WHERE id = ?`,
-          [id]
-      );
+    return this.repository.run(
+        `DELETE FROM reminder WHERE id = ?`,
+        [id]
+    );
   }
 
   deleteShedule(id) {
@@ -83,7 +98,13 @@ class ReminderService {
     return this.repository.all(
       `SELECT * FROM reminder WHERE id = ?`,
       [id]
-  );
+    );
+  }
+
+  getSettings() {
+    return this.repository.all(
+      `SELECT * FROM reminder_setting`
+    );
   }
 
   _getHour(time) {
@@ -183,8 +204,15 @@ ipc.on('next-reminder', async (_event) => {
   }
 });
 
-function _sendNotification(reminder, element, c , data) {
-  ipc.send('notification', _.first(reminder).title, _.first(reminder).message_notification);
+async function sendNotificationIsActived() {
+  let service = new ReminderService();
+  return _.first(await service.getSettings()).disable_notification;
+}
+
+async function _sendNotification(reminder, element, c , data) {
+  if (await sendNotificationIsActived()) {
+    ipc.send('notification', _.first(reminder).title, _.first(reminder).message_notification);
+  }
   c.deleteShedule(element.id).then(() => {
     data.splice(element, 1);
   });

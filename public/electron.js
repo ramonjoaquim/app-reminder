@@ -204,7 +204,7 @@ app.on('ready', () => {
   createLoadingScreen();
   setTimeout(() => {
     createWindow();
-  }, 3000);
+  }, 1000);
 });
 
 app.on('window-all-closed', () => {

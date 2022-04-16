@@ -17,6 +17,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import moment from 'moment';
 import '../../../app.css';
 import ReminderService from '../../../service/reminderService';
+import { TableHead } from '@material-ui/core';
 
 class ShowReminder extends Component {
 
@@ -29,7 +30,7 @@ class ShowReminder extends Component {
       anchorEl: null,
       openPop: null,
       currentIdRow: null,
-      weekDays: ''
+      weekDays: '',
     };
     this.setDatabase();
     this.loadData();
@@ -136,6 +137,34 @@ class ShowReminder extends Component {
     return resultFomated;
   }
 
+  setExpandableTableContent(value) {
+    this.expandeTableContent = value;
+  }
+
+  createRow(row)  {
+    return (
+      <TableRow key={row.id}>
+        <TableCell component="th" scope="row">
+          {row.title}
+        </TableCell>
+        <TableCell component="th" scope="row">
+          {row.message_notification}
+        </TableCell>
+        <TableCell component="th" align="center" scope="row">
+          {this.formatDate(row.startAt)} {row.timeStartAt} à {this.formatDate(row.endAt)} {row.timeEndAt}
+        </TableCell>
+        <TableCell align="center">
+          {row.interval}
+        </TableCell>
+        <TableCell align="center">
+          {this.formatWeekDays(row)}
+        </TableCell>
+        <TableCell align="right">
+          <Button className='buttonSecondary' size="small" onClick={() => this.deleteItem(row.id)} color="dark">delete</Button>
+        </TableCell>
+      </TableRow>
+    )
+  }
 
   render() {
     return (
@@ -150,8 +179,8 @@ class ShowReminder extends Component {
 
           <TableContainer component={Paper}>
             <Table className={this.classes.table} size="small" aria-label="a dense table">
-            <TableBody>
-                  <TableRow >
+              <TableHead>
+                <TableRow>
                     <TableCell component="th" align="left" scope="row">
                       Title
                     </TableCell>
@@ -170,29 +199,10 @@ class ShowReminder extends Component {
                     <TableCell component="th" align="left" scope="row">
                     </TableCell>
                   </TableRow>
-              </TableBody>
+              </TableHead>
               <TableBody>
                 {this.state.rows.map((row) => (
-                  <TableRow key={row.title}>
-                    <TableCell component="th" scope="row">
-                      {row.title}
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {row.message_notification}
-                    </TableCell>
-                    <TableCell component="th" align="center" scope="row">
-                      {this.formatDate(row.startAt)} {row.timeStartAt} à {this.formatDate(row.endAt)} {row.timeEndAt}
-                    </TableCell>
-                    <TableCell align="center">
-                      {row.interval}
-                    </TableCell>
-                    <TableCell align="center">
-                      {this.formatWeekDays(row)}
-                    </TableCell>
-                    <TableCell align="right">
-                      <Button className='buttonSecondary' size="small" onClick={() => this.deleteItem(row.id)} color="dark">delete</Button>
-                    </TableCell>
-                  </TableRow>
+                  this.createRow(row)
                 ))}
               </TableBody>
             </Table>

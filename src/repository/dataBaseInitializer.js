@@ -34,7 +34,16 @@ class DataBaseInitializer {
         UNIQUE(id_reminder, date)
       );
       `;
+
+      const sql3 = `
+      CREATE TABLE IF NOT EXISTS reminder_setting (
+        id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+        disable_notification  BOLLEAN default false
+      );
+      `;
+
       this.dao.run(sql2);
+      this.dao.run(sql3);
       return this.dao.run(sql);
   }
 }

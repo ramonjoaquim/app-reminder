@@ -103,11 +103,10 @@ class CreateReminder extends Component {
     this.setState({ open: true });
   };
 
-  closeNotify = (event, reason) => {
+  closeNotify = (_event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-
     this.setState({ open: false });
   };
 

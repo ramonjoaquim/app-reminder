@@ -20,6 +20,7 @@ class ReminderRepository {
             this.db.run(sql, params, function (err) {
                 if (err) {
                   console.error('Error running sql ' + sql);
+                  console.error(err);
                   reject(err);
                 } else {
                   resolve({ id: this.lastID });
